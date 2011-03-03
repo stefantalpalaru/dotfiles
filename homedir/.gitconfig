@@ -1,0 +1,17 @@
+[user]
+	name = Stefan Talpalaru
+	email = stefantalpalaru@yahoo.com
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	sharedRepository = 0777
+[mergetool]
+	keepbackup = false
+[alias]
+	co = checkout
+	ci = commit
+	c-p = cherry-pick
+[push]
+	default = matching

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <group name="Keys">
+    <option name="Action0" value="none"/>
+    <option name="Action1" value="none"/>
+    <option name="Key0" value="&lt;End&gt;"/>
+    <option name="Key1" value="&lt;Home&gt;"/>
+    <option name="Number" value="2"/>
+  </group>
+  <group name="Options">
+    <option name="BookPath" value="~/FBooks"/>
+    <option name="ScanSubdirs" value="true"/>
+  </group>
+  <group name="TapScrolling">
+    <option name="Enabled" value="true"/>
+    <option name="Mode" value="2"/>
+  </group>
+  <group name="Web Browser">
+    <option name="Name" value="Browser"/>
+  </group>
+</config>

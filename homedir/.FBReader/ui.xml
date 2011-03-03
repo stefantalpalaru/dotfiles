@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <group name="Colors">
+    <option name="Background" value="15790320"/>
+    <option name="Text" value="1052688"/>
+  </group>
+  <group name="Indicator">
+    <option name="PositionText" value="true"/>
+    <option name="Type" value="1"/>
+  </group>
+  <group name="InfoDialog">
+    <option name="Height" value="347"/>
+    <option name="SelectedTab" value="Common"/>
+    <option name="Width" value="623"/>
+  </group>
+  <group name="OpenFileDialog">
+    <option name="Height" value="495"/>
+    <option name="Width" value="661"/>
+  </group>
+  <group name="Options">
+    <option name="WindowState" value="1"/>
+    <option name="YPosition" value="0"/>
+  </group>
+  <group name="OptionsDialog">
+    <option name="Height" value="363"/>
+    <option name="SelectedTab" value="Keys"/>
+    <option name="Width" value="541"/>
+  </group>
+  <group name="Style">
+    <option name="Base:fontFamily" value="DejaVu Sans"/>
+    <option name="Regular Paragraph:spaceAfter" value="10"/>
+  </group>
+  <group name="ToggleButtonGroup">
+    <option name="booksOrder" value="byAuthor"/>
+  </group>
+</config>

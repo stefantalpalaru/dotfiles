@@ -1,0 +1,188 @@
+# Conky sample configuration
+#
+# the list of variables has been removed from this file in favour
+# of keeping the documentation more maintainable.
+# Check http://conky.sf.net for an up-to-date-list.
+
+maximum_width 400
+minimum_size 400
+
+# set to yes if you want Conky to be forked in the background
+background yes
+
+# X font when Xft is disabled, you can pick one with program xfontsel
+#font 5x7
+#font 6x10
+#font 7x13
+#font 8x13
+#font 9x15
+#font *mintsmild.se*
+#font -*-*-*-*-*-*-34-*-*-*-*-*-*-*
+
+
+# Use Xft?
+use_xft yes
+
+# Set conky on the bottom of all other applications
+#on_bottom yes
+
+# Xft font when Xft is enabled
+xftfont Bitstream Vera Sans Mono:size=11
+
+# Text alpha when using Xft
+xftalpha 0.9
+
+# Print everything to stdout?
+out_to_console no
+
+# MPD host/port
+# mpd_host localhost
+# mpd_port 6600
+# mpd_password tinker_bell
+
+# Print everything to console?
+# out_to_console no
+
+# mail spool
+mail_spool $MAIL
+
+# Update interval in seconds
+update_interval 1.0
+
+# This is the number of times Conky will update before quitting.
+# Set to zero to run forever.
+total_run_times 0
+
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_type desktop
+#own_window_hints 
+
+# Use pseudo transparency with own_window?
+own_window_transparent yes
+
+# If own_window_transparent is set to no, you can set the background colour here
+own_window_colour black
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# Draw shades?
+draw_shades yes
+
+# Draw outlines?
+draw_outline no
+
+# Draw borders around text
+draw_borders no
+
+# Stippled borders?
+stippled_borders 8
+
+# border margins
+#border_margin 4
+border_inner_margin 4
+
+# border width
+border_width 1
+
+# Default colors and also border colors
+#default_color darkcyan
+default_color lightblue
+default_shade_color black
+default_outline_color black
+
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+#alignment none
+
+# Gap between borders of screen and text
+# same thing as passing -x at command line
+gap_x 5
+gap_y 5
+
+# Subtract file system buffers from used memory?
+no_buffers yes
+
+# set to yes if you want all text to be in uppercase
+uppercase no
+
+# number of cpu samples to average
+# set to 1 to disable averaging
+cpu_avg_samples 1
+
+# number of net samples to average
+# set to 1 to disable averaging
+net_avg_samples 2
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale yes
+
+
+# Add spaces to keep things from moving about?  This only affects certain objects.
+use_spacer right
+
+
+# Allow for the creation of at least this number of port monitors (if 0 or not set, default is 16) 
+#min_port_monitors 16
+
+# Allow each port monitor to track at least this many connections (if 0 or not set, default is 256)
+#min_port_monitor_connections 256
+
+# mpd
+mpd_host localhost
+mpd_port 6600
+
+# variable is given either in format $variable or in ${variable}. Latter
+# allows characters right after the variable and must be used in network
+# stuff because of an argument
+
+# stuff after 'TEXT' will be formatted on screen
+#${color #ffffff}${exec cat /src/weather.txt}
+#${mpd_smart}
+#${color #13e01d}${exec mpc | head -n 1 | grep -v "^volume:" | fmt -w 44}
+#${color}album: ${exec mpc --format "%album%" | head -n 1 | grep -v "^volume:" | fmt -w 37}
+#${color}CPU temp: ${hwmon 1 temp 2}°C  fan: ${hwmon 1 fan 1} RPM
+#${color}HDD temp (/dev/sdb): ${hddtemp /dev/sdb}°C  ${color}Nvidia: ${nvidia temp}°C
+#CPU temp: ${acpitemp}°C
+#${color}eth1 Up:${color #22ccff} ${upspeedf eth1} KB/s${color} ${offset 10}Down:${color #22ccff} ${downspeedf eth1} KB/s
+
+TEXT
+${color}Linux $kernel on $machine  ${freq}MHz
+${time %a, %d %B %Y - %k:%M}
+${color #555555}$hr
+${color}Uptime:${color} $uptime, Load: ${loadavg}
+${color}CPU 1 :${color} ${cpu cpu1}% ${color #ff3333} ${cpubar cpu1}
+${color}CPU 2 :${color} ${cpu cpu2}% ${color #ff3333} ${cpubar cpu2}
+${color}CPU   :${color} ${cpu 0}% ${color #ff0000} ${cpubar}
+${color}RAM :${color} $mem/$memmax - $memperc% ${membar}
+${color}Swap :${color} $swap/$swapmax - $swapperc% ${swapbar}
+${color}Networking:
+ ${color}eth0 Up:${color #22ccff} ${upspeedf eth0} KB/s${color} ${offset 10}Down:${color #22ccff} ${downspeedf eth0} KB/s
+${color}File systems:
+ / ${color}${fs_used /}/${fs_free /} ${fs_bar /}
+ /mnt/sda2 ${color}${fs_used /mnt/sda2}/${fs_free /mnt/sda2} ${fs_bar /mnt/sda2}
+ /mnt/sdb2 ${color}${fs_used /mnt/sdb2}/${fs_free /mnt/sdb2} ${fs_bar /mnt/sdb2}
+${alignc}${color}Name              PID     CPU%   MEM%
+${alignc}${color #ddaa00} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${alignc}${color} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${alignc}${color} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${alignc}${color} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+${color}Mem usage
+${alignc}${color #ddaa00} ${top_mem name 1} ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}
+${alignc}${color} ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+${alignc}${color} ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
+
+CPU temp: ${execi 10 cat /sys/class/thermal/thermal_zone0/temp | sed 's/000$//'}°C
+${color}${if_running mpd}
+${mpd_status}, ${mpd_bitrate} kbps, ${mpd_elapsed}(${mpd_length}), ${mpd_percent}% ${mpd_bar}
+${mpd_artist}: ${mpd_title}
+album: ${mpd_album}
+${endif}
+${color}${execi 10 qlop -cC 2>/dev/null}
+${color}${exec cat /src/weather.txt}
+
+

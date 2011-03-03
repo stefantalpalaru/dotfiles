@@ -1,0 +1,4 @@
+#command
+^[[1~       goto-line
+^[[4~       goto-end
+^[[[C       quit

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <group name="Search">
+    <option name="Pattern" value="count"/>
+    <option name="Pattern1" value="paycheck"/>
+  </group>
+</config>
