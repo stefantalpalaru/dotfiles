@@ -1,0 +1,4 @@
+pre_pkg_setup() {
+ elog "forcing \"-O\" in CFLAGS for $PN"
+ CFLAGS="${CFLAGS} -O"
+}

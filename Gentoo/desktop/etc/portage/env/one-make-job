@@ -1,0 +1,4 @@
+pre_pkg_setup() {
+ elog "forcing MAKEOPTS="-j1" for $PN"
+ MAKEOPTS="-j1"
+}

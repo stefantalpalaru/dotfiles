@@ -1,0 +1,4 @@
+pre_pkg_setup() {
+ elog "forcing \"-Wl,--no-as-needed\" in LDFLAGS for $PN"
+ LDFLAGS="${LDFLAGS} -Wl,--no-as-needed"
+}

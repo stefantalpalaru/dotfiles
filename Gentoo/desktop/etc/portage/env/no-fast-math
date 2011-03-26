@@ -1,0 +1,5 @@
+pre_pkg_setup() {
+ elog "disabling -ffast-math for $PN"
+ CFLAGS="${CFLAGS} -fno-fast-math"
+ CXXFLAGS="${CFLAGS}"
+}
