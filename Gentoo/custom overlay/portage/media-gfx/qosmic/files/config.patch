@@ -1,0 +1,20 @@
+--- old	2010-09-27 19:34:44.000000000 +0200
++++ qosmic.pro	2010-09-27 19:52:11.140245354 +0200
+@@ -45,7 +45,7 @@
+ ## Add linked libs and paths for headers and palettes here using pkg-config.
+ ## If your system doesn't support pkg-config then comment out the next line and
+ ## set these values below.
+-#CONFIG += link_pkgconfig
++CONFIG += link_pkgconfig
+ 
+ link_pkgconfig {
+ 	message("Config using pkg-config version "$$system(pkg-config --version))
+@@ -54,6 +54,8 @@
+ 	## The directory that contains flam3-palettes.xml must be set here.  If your
+ 	## system has pkg-config this should find the palettes.
+ 	PALETTESDIR = $$system(pkg-config --variable=datarootdir flam3)/flam3
++	INCLUDEPATH += /usr/include/libxml2
++	LIBS += -L/usr/lib/libxml2 -lflam3 -lm -ljpeg -lxml2 -llua
+ }
+ else {
+ 	message("Config not using pkg-config")

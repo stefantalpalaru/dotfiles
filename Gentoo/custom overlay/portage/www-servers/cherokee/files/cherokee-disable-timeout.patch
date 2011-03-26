@@ -1,0 +1,107 @@
+diff -ur cherokee-svn/admin/ModuleBalancer.py cherokee-patched/admin/ModuleBalancer.py
+--- cherokee-svn/admin/ModuleBalancer.py	2009-08-25 21:40:01.000000000 +0200
++++ cherokee-patched/admin/ModuleBalancer.py	2010-04-17 23:56:26.780134866 +0200
+@@ -10,6 +10,7 @@
+ NOTE_BALANCER      = N_('Allow to select how the connections will be dispatched.')
+ NO_GENERAL_SOURCES = N_('There are no Information Sources configured. Please proceed to configure an <a href="/source">Information Source</a>.')
+ NO_SOURCE_WARNING  = N_('A load balancer must be configured to use at least one information source.')
++NOTE_DISABLE_TIMEOUT = N_('Set the interval (in seconds) for which an unresponsive source is disabled before retrying.')
+ 
+ class ModuleBalancerGeneric (Module, FormHelper):
+     def __init__ (self, cfg, prefix, submit_url, name):
+@@ -33,6 +34,12 @@
+                 self._cfg[self._prefix] = BALANCERS[0][0]
+ 
+         txt = ''
++
++        # disable timeout
++        table = TableProps()
++        self.AddPropEntry (table, 'Disable timeout',    '%s!balancer_disable_timeout'%(self._prefix), _(NOTE_DISABLE_TIMEOUT))
++        txt += str(table)
++
+         general_sources  = self._cfg.keys('source')
+         balancer_sources = self._cfg.keys('%s!source'%(self._prefix))
+ 
+diff -ur cherokee-svn/admin/ModuleProxy.py cherokee-patched/admin/ModuleProxy.py
+--- cherokee-svn/admin/ModuleProxy.py	2010-03-21 02:16:13.175037314 +0100
++++ cherokee-patched/admin/ModuleProxy.py	2010-04-17 23:56:26.781134347 +0200
+@@ -202,6 +202,12 @@
+         if new_balancer:
+             self._cfg[pre] = new_balancer
+ 
++        pre2  = "%s!balancer!balancer_disable_timeout" % (self._prefix)
++
++        balancer_disable_timeout = post.pop(pre2)
++        if balancer_disable_timeout:
++            self._cfg[pre2] = balancer_disable_timeout
++
+         cfg  = self._cfg[pre]
+         if cfg and cfg.value:
+             name = cfg.value
+diff -ur cherokee-svn/cherokee/balancer.c cherokee-patched/cherokee/balancer.c
+--- cherokee-svn/cherokee/balancer.c	2010-03-21 02:16:09.399788957 +0100
++++ cherokee-patched/cherokee/balancer.c	2010-04-18 15:55:56.756384291 +0200
+@@ -149,6 +149,14 @@
+ 
+ 		add_source (balancer, src);
+ 	}
++	
++	ret = cherokee_config_node_get (conf, "balancer_disable_timeout", &subconf);
++	if (ret == ret_ok) {
++		balancer->disable_timeout = atoi(subconf->val.buf);
++	} else {
++		LOG_ERROR (CHEROKEE_ERROR_BALANCER_NO_DISABLE_TIMEOUT, BAL_DISABLE_TIMEOUT);
++		balancer->disable_timeout = BAL_DISABLE_TIMEOUT;
++	}
+ 
+ 	return ret_ok;
+ }
+diff -ur cherokee-svn/cherokee/balancer.h cherokee-patched/cherokee/balancer.h
+--- cherokee-svn/cherokee/balancer.h	2010-03-21 02:16:09.402791323 +0100
++++ cherokee-patched/cherokee/balancer.h	2010-04-17 23:56:26.782134210 +0200
+@@ -48,6 +48,7 @@
+ 	/* Properties */
+ 	cherokee_list_t             entries;
+ 	cuint_t                     entries_len;
++	cuint_t                     disable_timeout;;
+ 
+ 	/* Virtual methods */
+ 	balancer_configure_func_t   configure;
+diff -ur cherokee-svn/cherokee/balancer_ip_hash.c cherokee-patched/cherokee/balancer_ip_hash.c
+--- cherokee-svn/cherokee/balancer_ip_hash.c	2010-03-21 02:16:09.537785298 +0100
++++ cherokee-patched/cherokee/balancer_ip_hash.c	2010-04-17 23:56:26.782134210 +0200
+@@ -134,7 +134,7 @@
+ 		balancer->n_active -= 1;
+ 
+ 		entry->disabled       = true;
+-		entry->disabled_until = cherokee_bogonow_now + BAL_DISABLE_TIMEOUT;
++		entry->disabled_until = cherokee_bogonow_now + balancer->balancer.disable_timeout;
+ 
+ 		/* Notify what has happened
+ 		 */
+diff -ur cherokee-svn/cherokee/balancer_round_robin.c cherokee-patched/cherokee/balancer_round_robin.c
+--- cherokee-svn/cherokee/balancer_round_robin.c	2010-03-21 02:16:09.532784612 +0100
++++ cherokee-patched/cherokee/balancer_round_robin.c	2010-04-17 23:56:26.782134210 +0200
+@@ -162,7 +162,7 @@
+ 		/* Disable the source
+ 		 */
+ 		entry->disabled       = true;
+-		entry->disabled_until = cherokee_bogonow_now + BAL_DISABLE_TIMEOUT;
++		entry->disabled_until = cherokee_bogonow_now + balancer->balancer.disable_timeout;
+ 
+ 		/* Notify what has happened
+ 		 */
+diff -ur cherokee-svn/cherokee/error_list.py cherokee-patched/cherokee/error_list.py
+--- cherokee-svn/cherokee/error_list.py	2010-03-21 02:16:09.491789147 +0100
++++ cherokee-patched/cherokee/error_list.py	2010-04-18 15:54:48.872387202 +0200
+@@ -336,6 +336,10 @@
+   desc  = "For some reason the load balancer module is using a missing Information Source. Please recheck that it uses a correct one.",
+   admin = "/source")
+ 
++e('BALANCER_NO_DISABLE_TIMEOUT',
++  title = "Lacking a 'balancer_disable_timeout' entry",
++  desc  = "Using the default of %d seconds.")
++
+ e('BALANCER_ONLINE_SOURCE',
+   title = "Taking source='%s' back on-line",
+   desc  = "The information source is being re-enabled.")

@@ -1,0 +1,141 @@
+# ChangeLog for media-gfx/iscan
+# Copyright 1999-2008 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/iscan/ChangeLog,v 1.30 2008/06/30 17:52:50 sbriesen Exp $
+
+  30 Jun 2008; Stefan Briesenick <sbriesen@gentoo.org> -iscan-2.8.0.ebuild,
+  iscan-2.11.0.ebuild:
+  removed old version.
+
+  30 Jun 2008; Stefan Briesenick <sbriesen@gentoo.org> iscan-2.11.0.ebuild:
+  small correction in libtool fix
+
+  29 Jun 2008; Peter Alfredsen <loki_val@gentoo.org>
+  +files/iscan-2.11.0-libltdl.patch, iscan-2.11.0.ebuild:
+  Fix libtool-2.2 breakage and do a full eautoreconf wrt bug #226315.
+
+  29 Jun 2008; Peter Alfredsen <loki_val@gentoo.org>
+  +files/iscan-2.11.0-gcc43.patch, iscan-2.11.0.ebuild:
+  Fix for gcc-4.3. Thanks to unK <electricityispower@gmail.com>.
+
+*iscan-2.11.0 (14 May 2008)
+
+  14 May 2008; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.11.0.ebuild:
+  version bump. solves bug #216142.
+
+  21 Apr 2008; Diego Pettenò <flameeyes@gentoo.org>
+  +files/iscan-2.10.0+gcc-4.3.patch, iscan-2.10.0.ebuild:
+  Run full-fledged eautoreconf, otherwise the maintainer-mode will re-run it
+  anyway causing two runs of autoconf; add patch to build with GCC 4.3.
+
+  26 Jan 2008; Stefan Briesenick <sbriesen@gentoo.org>
+  -iscan-2.4.0-r1.ebuild, -iscan-2.6.0.ebuild, -iscan-2.7.0.ebuild:
+  removed old versions, solving bug #207496.
+
+*iscan-2.10.0 (17 Nov 2007)
+
+  17 Nov 2007; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.10.0.ebuild:
+  version bump, solving bug #199433.
+
+  03 Sep 2007; Stefan Briesenick <sbriesen@gentoo.org>
+  iscan-2.4.0-r1.ebuild, iscan-2.6.0.ebuild, iscan-2.7.0.ebuild:
+  fixing udev issues (#188092).
+
+*iscan-2.8.0 (03 Sep 2007)
+
+  03 Sep 2007; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.8.0.ebuild:
+  version bump (#191075) + fixing udev issues (#188092).
+
+*iscan-2.7.0 (14 Jul 2007)
+
+  14 Jul 2007; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.7.0.ebuild:
+  version bump
+
+  17 May 2007; Stefan Briesenick <sbriesen@gentoo.org> iscan-2.6.0.ebuild:
+  fixed autotools stuff.
+
+  17 May 2007; Stefan Briesenick <sbriesen@gentoo.org>
+  -iscan-2.2.0-r1.ebuild, -iscan-2.4.0.ebuild:
+  removed old versions.
+
+*iscan-2.6.0 (17 May 2007)
+
+  17 May 2007; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.6.0.ebuild:
+  version bump, solving bug #178667.
+
+*iscan-2.4.0-r1 (06 Jan 2007)
+
+  06 Jan 2007; Stefan Briesenick <sbriesen@gentoo.org>
+  +iscan-2.4.0-r1.ebuild:
+  ebuild cleanup, changed udev rules handling.
+
+  17 Dec 2006; Stefan Briesenick <sbriesen@gentoo.org> -iscan-2.1.0.ebuild,
+  -iscan-2.2.0.ebuild:
+  removed old versions.
+
+*iscan-2.4.0 (17 Dec 2006)
+
+  17 Dec 2006; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.4.0.ebuild:
+  version bump.
+
+*iscan-2.2.0-r1 (17 Dec 2006)
+
+  17 Dec 2006; Stefan Briesenick <sbriesen@gentoo.org>
+  +iscan-2.2.0-r1.ebuild:
+  ebuild cleanup, removed 'udev' use-flag (see bug #158114).
+
+*iscan-2.2.0 (30 Sep 2006)
+
+  30 Sep 2006; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.2.0.ebuild:
+  version bump, added QA_TEXTRELS.
+
+  30 Sep 2006; Stefan Briesenick <sbriesen@gentoo.org> -iscan-1.18.0.ebuild,
+  -iscan-2.0.0-r1.ebuild:
+  removed old versions.
+
+  21 Jul 2006; Stefan Briesenick <sbriesen@gentoo.org> files/iscan-usb.sh:
+  fixed legacy udev script
+
+*iscan-2.1.0 (25 Jun 2006)
+
+  25 Jun 2006; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.1.0.ebuild:
+  version bump, some ebuild improvements regarding udev/hotplug.
+
+  27 Apr 2006; Marien Zwart <marienz@gentoo.org> Manifest:
+  Fixing SHA256 digest, pass four
+
+  16 Apr 2006; Stefan Briesenick <sbriesen@gentoo.org>
+  iscan-2.0.0-r1.ebuild:
+  added GCC 4.2 support (see bug #130118).
+
+  15 Apr 2006; Stefan Briesenick <sbriesen@gentoo.org> -iscan-2.0.0.ebuild:
+  remove buggy revision.
+
+*iscan-2.0.0-r1 (15 Apr 2006)
+
+  15 Apr 2006; Stefan Briesenick <sbriesen@gentoo.org> +files/iscan-usb.sh,
+  +iscan-2.0.0-r1.ebuild:
+  auto-add 'epkowa' entry to dll.conf (bug #129198), fixing -X compile errors
+  if GTK isn't available (bug #129953), adding optional UDEV hotplug support
+  ('udev' use flag), adding hints that firmware files can be used also with
+  'snapscan' backend + adding firmware entries to snapscan.conf.
+
+  06 Apr 2006; Stefan Briesenick <sbriesen@gentoo.org> -iscan-1.17.0.ebuild:
+  removed old version.
+
+*iscan-2.0.0 (06 Apr 2006)
+
+  06 Apr 2006; Stefan Briesenick <sbriesen@gentoo.org> +iscan-2.0.0.ebuild:
+  version bump, ebuild cleanup + enhancements, adding GCC4.x support, solving
+  bug #124875.
+
+*iscan-1.18.0 (10 Feb 2006)
+
+  10 Feb 2006; Stefan Briesenick <sbriesen@gentoo.org> +iscan-1.18.0.ebuild:
+  version bump, ebuild cleanup, added gcc3.2/3.3 support, solving bug #50043.
+
+*iscan-1.17.0 (24 Nov 2005)
+
+  24 Nov 2005; Stefan Briesenick <sbriesen@gentoo.org> +metadata.xml,
+  +iscan-1.17.0.ebuild:
+  initial commit.
+

@@ -1,0 +1,11 @@
+--- resource-agents-1.0.2-rc2.old/Makefile.am	2010-01-06 13:21:34.000000000 +0100
++++ resource-agents-1.0.2-rc2/Makefile.am	2010-01-06 13:37:19.000000000 +0100
+@@ -19,7 +19,7 @@
+ MAINTAINERCLEANFILES    = Makefile.in aclocal.m4 configure DRF/config-h.in \
+                         DRF/stamp-h.in libtool.m4 ltdl.m4 libltdl.tar
+ 
+-SUBDIRS	= heartbeat tools ldirectord doc
++SUBDIRS	= heartbeat tools ldirectord
+ 
+ dist-clean-local:
+ 	rm -f autoconf automake autoheader $(TARFILE)
