@@ -1,0 +1,4 @@
+pre_pkg_setup() {
+ CFLAGS="-O3 -march=native -pipe -fomit-frame-pointer -mssse3 -msse4.1 -floop-interchange -floop-strip-mine -floop-block -ffast-math -mfpmath=sse"
+}
+
