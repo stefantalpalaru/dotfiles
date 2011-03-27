@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="dev-libs/libxml2
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/libpng
 	!<=x11-misc/electricsheep-2.6.8-r2"
 RDEPEND="${DEPEND}"

@@ -19,7 +19,7 @@ DEPEND="( >=x11-libs/gtk+-2.4
 	>=net-print/gutenprint-5.1.7
 	media-libs/lcms
 	>=media-libs/netpbm-10.43
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/tiff )"
 RDEPEND="${DEPEND}"
 

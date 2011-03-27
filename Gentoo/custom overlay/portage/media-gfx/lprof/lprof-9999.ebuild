@@ -21,7 +21,7 @@ DEPEND="
 	dev-libs/openssl
 	media-libs/libpng
 	media-libs/tiff
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/vigra
 	sys-libs/zlib
 	virtual/libusb
