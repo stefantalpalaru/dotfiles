@@ -54,9 +54,9 @@ src_configure(){
 			grep xsl\- | cut -d':' -f1)"
 	fi
 
-	econf --enable-autoconf \
+	econf  \
 		--datadir=/usr/share/postgresql-${PGSLOT}/contrib/ \
-		--libdir=/usr/$(get_libdir)/postgresql-${PGSLOT}/ \
+		--libdir=/usr/$(get_libdir)/postgresql-${PGSLOT}/lib/ \
 		--docdir="${D}/usr/share/doc/${PF}/html/" \
 		${myconf} ||\
 			die "Error: econf failed"
@@ -102,11 +102,11 @@ src_install(){
 	echo "template_gis" > postgis_dbs
 	doconfd postgis_dbs
 
-	if [ ! -z "${require_soft_upgrade}" ]; then
-		grep "'C'" -B 4 "${D}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis.sql | \
+	#if [ ! -z "${require_soft_upgrade}" ]; then
+		grep "'C'" -B 4 -A 1 "${D}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis.sql | \
 			grep -v "'sql'" > \
 				"${D}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql
-	fi
+	#fi
 }
 
 pkg_postinst() {
@@ -118,8 +118,9 @@ pkg_config(){
 	einfo "Create or upgrade a spatial templates and databases."
 	einfo "Please add your databases names into ${ROOT}etc/conf.d/postgis_dbs"
 	einfo "(templates name have to be prefixed with 'template')."
+	source "${ROOT}"etc/conf.d/postgresql-${PGSLOT}
+	[ -S /var/run/postgresql/.s.PGSQL.${PGPORT} ] || die "The PostgreSQL server	must be running and listening on /var/run/postgresql/.s.PGSQL.${PGPORT}"
 	for i in $(cat "${ROOT}etc/conf.d/postgis_dbs"); do
-		source "${ROOT}"etc/conf.d/postgresql-${PGSLOT}
 		PGDATABASE=${i}
 		eval set PGDATABASE=${i}
 		myuser="${PGUSER:-postgres}"
@@ -140,57 +141,75 @@ pkg_config(){
 		logfile=$(mktemp "${ROOT}tmp/error.log.XXXXXX")
 		safe_exit(){
 			eerror "Removing created ${mydb} ${mytype}"
-			dropdb -U "${myuser}" "${mydb}" ||\
+			dropdb -p ${PGPORT} -U "${myuser}" "${mydb}" ||\
 				(eerror "${1}"
 				die "Removing old db failed, you must do it manually")
 			eerror "Please read ${logfile} for more information."
-			die "${1}"
+			die "${1}"${logfile}
 		}
 
 	# if there is not a table or a template existing with the same name, create.
 		if [ -z "$(psql -U ${myuser} -l | grep "${mydb}")" ]; then
-			createdb -O ${myuser} -U ${myuser} ${mydb} ||\
+			createdb -p ${PGPORT} -O ${myuser} -U ${myuser} ${mydb} ||\
 				die "Unable to create the ${mydb} ${mytype} as ${myuser}"
-			createlang -U ${myuser} plpgsql ${mydb}
+			createlang -p ${PGPORT} -U ${myuser} plpgsql ${mydb}
 			#if [ "$?" == 2 ]; then
 				#safe_exit "Unable to createlang plpgsql ${mydb}."
 			#fi
-			(psql -q -U ${myuser} ${mydb} -f \
+			(psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
 				"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis.sql &&
-			psql -q -U ${myuser} ${mydb} -f \
+			psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
 				"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/spatial_ref_sys.sql) 2>\
 					"${logfile}"
 			if [ "$(grep -c ERROR "${logfile}")" \> 0 ]; then
 				safe_exit "Unable to load sql files."
 			fi
 			if ${is_template}; then
-				psql -q -U ${myuser} ${mydb} -c \
+				psql -p ${PGPORT} -q -U ${myuser} ${mydb} -c \
 					"UPDATE pg_database SET datistemplate = TRUE
 					WHERE datname = '${mydb}';
 			GRANT ALL ON table spatial_ref_sys, geometry_columns TO PUBLIC;" \
 				|| die "Unable to create ${mydb}"
-			psql -q -U ${myuser} ${mydb} -c \
+			psql -p ${PGPORT} -q -U ${myuser} ${mydb} -c \
 				"VACUUM FREEZE;" || die "Unable to set VACUUM FREEZE option"
 			fi
 		else
-			if [ -e "${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql ];
+			if [ $(psql -p ${PGPORT} -q -U ${myuser} ${mydb} -c "SELECT COUNT(*) FROM pg_proc WHERE proname='postgis_lib_version'" | head -n 3 | tail -n 1 | tr -d ' \n') == 0 ];
 			then
-				einfo "Updating the dynamic library references"
-				psql -q -f \
-					"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql\
-						2> "${logfile}"
-				if [ "$(grep -c ERROR "${logfile}")" \> 0 ]; then
-					safe_exit "Unable to update references."
-				fi
-			fi
-			if [ -e "${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis_upgrade_15_minor.sql ];
-			then
-				einfo "Running soft upgrade"
-				psql -q -U ${myuser} ${mydb} -f \
-					"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis_upgrade_15_minor.sql 2>\
+				# existing db but not spatially enabled
+				einfo "'${mydb}' is not spatially enabled. Installing postgis SQL in it"
+				(psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
+					"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis.sql &&
+				psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
+					"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/spatial_ref_sys.sql) 2>\
 						"${logfile}"
 				if [ "$(grep -c ERROR "${logfile}")" \> 0 ]; then
-					safe_exit "Unable to run soft upgrade."
+					eerror "Unable to load sql files."
+					die "see ${logfile} for details"
+				fi
+			else
+				# spatially enabled db. soft-upgrade it
+				if [ -e "${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql ];
+				then
+					einfo "Updating the dynamic library references"
+					psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
+						"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql\
+							2> "${logfile}"
+					if [ "$(grep -c ERROR "${logfile}")" \> 0 ]; then
+						eerror "Unable to update references."
+						die "see ${logfile} for details"
+					fi
+				fi
+				if [ -e "${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis_upgrade_15_minor.sql ];
+				then
+					einfo "Running soft upgrade"
+					psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
+						"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis_upgrade_15_minor.sql 2>\
+							"${logfile}"
+					if [ "$(grep -c ERROR "${logfile}")" \> 0 ]; then
+						eerror "Unable to run soft upgrade."
+						die "see ${logfile} for details"
+					fi
 				fi
 			fi
 		fi
