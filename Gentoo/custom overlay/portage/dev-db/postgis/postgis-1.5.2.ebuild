@@ -29,24 +29,6 @@ RESTRICT="test"
 PGSLOT="$(eselect postgresql show)"
 [ "${PGSLOT}" = "(none)" ] && die "You must select a PostgreSQL slot before emerging this package."
 
-pkg_setup(){
-	if [ ! -z "${PGUSER}" ]; then
-		eval unset PGUSER
-	fi
-	if [ ! -z "${PGDATABASE}" ]; then
-		eval unset PGDATABASE
-	fi
-	local tmp
-	tmp="$(portageq match / ${CATEGORY}/${PN} | cut -d'.' -f2)"
-	if [ "${tmp}" != "$(get_version_component_range 2)" ]; then
-		elog "You must soft upgrade your existing postgis enabled databases"
-		elog "by adding their names in the ${ROOT}conf.d/postgis_dbs file"
-		elog "then using 'emerge --config postgis'."
-		require_soft_upgrade="1"
-		ebeep 2
-	fi
-}
-
 src_configure(){
 	local myconf
 	if use doc; then
@@ -110,7 +92,7 @@ src_install(){
 }
 
 pkg_postinst() {
-	elog "To create new (upgrade) spatial databases add their names in the"
+	elog "To create new spatial databases (or soft-upgrade existing ones) add their names in the"
 	elog "${ROOT}etc/conf.d/postgis_dbs file, then use 'emerge --config postgis'."
 }
 
@@ -136,11 +118,11 @@ pkg_config(){
 		fi
 
 		einfo
-		einfo "Using the user ${myuser} and the ${mydb} ${mytype}."
+		einfo "Using the user '${myuser}' and the '${mydb}' ${mytype}."
 
 		logfile=$(mktemp "${ROOT}tmp/error.log.XXXXXX")
 		safe_exit(){
-			eerror "Removing created ${mydb} ${mytype}"
+			eerror "Removing created '${mydb}' ${mytype}"
 			dropdb -p ${PGPORT} -U "${myuser}" "${mydb}" ||\
 				(eerror "${1}"
 				die "Removing old db failed, you must do it manually")
@@ -151,11 +133,8 @@ pkg_config(){
 	# if there is not a table or a template existing with the same name, create.
 		if [ -z "$(psql -U ${myuser} -l | grep "${mydb}")" ]; then
 			createdb -p ${PGPORT} -O ${myuser} -U ${myuser} ${mydb} ||\
-				die "Unable to create the ${mydb} ${mytype} as ${myuser}"
+				die "Unable to create the '${mydb}' ${mytype} as '${myuser}'"
 			createlang -p ${PGPORT} -U ${myuser} plpgsql ${mydb}
-			#if [ "$?" == 2 ]; then
-				#safe_exit "Unable to createlang plpgsql ${mydb}."
-			#fi
 			(psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
 				"${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/postgis.sql &&
 			psql -p ${PGPORT} -q -U ${myuser} ${mydb} -f \
@@ -169,9 +148,11 @@ pkg_config(){
 					"UPDATE pg_database SET datistemplate = TRUE
 					WHERE datname = '${mydb}';
 			GRANT ALL ON table spatial_ref_sys, geometry_columns TO PUBLIC;" \
-				|| die "Unable to create ${mydb}"
+				|| die "Unable to create '${mydb}'"
 			psql -p ${PGPORT} -q -U ${myuser} ${mydb} -c \
 				"VACUUM FREEZE;" || die "Unable to set VACUUM FREEZE option"
+			else
+				einfo "new tables created in '${mydb}': 'spatial_sys_ref' and 'geometry_columns'. It's up to you to grant the necessary rights"
 			fi
 		else
 			if [ $(psql -p ${PGPORT} -q -U ${myuser} ${mydb} -c "SELECT COUNT(*) FROM pg_proc WHERE proname='postgis_lib_version'" | head -n 3 | tail -n 1 | tr -d ' \n') == 0 ];
@@ -187,6 +168,7 @@ pkg_config(){
 					eerror "Unable to load sql files."
 					die "see ${logfile} for details"
 				fi
+				einfo "new tables created in '${mydb}': 'spatial_sys_ref' and 'geometry_columns'. It's up to you to grant the necessary rights"
 			else
 				# spatially enabled db. soft-upgrade it
 				if [ -e "${ROOT}"usr/share/postgresql-${PGSLOT}/contrib/postgis-1.5/load_before_upgrade.sql ];
