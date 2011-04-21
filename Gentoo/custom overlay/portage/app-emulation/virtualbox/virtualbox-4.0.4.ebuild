@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
+EAPI=4
 
-inherit eutils fdo-mime flag-o-matic linux-info pax-utils qt4-r2 toolchain-funcs
+inherit eutils fdo-mime flag-o-matic linux-info pax-utils qt4-r2 toolchain-funcs java-pkg-opt-2
 
 if [[ ${PV} == "9999" ]] ; then
 	# XXX: should finish merging the -9999 ebuild into this one ...
@@ -52,7 +52,7 @@ DEPEND="${RDEPEND}
 	>=dev-lang/yasm-0.6.2
 	>=dev-util/kbuild-0.1.5-r1
 	!headless? ( x11-libs/libXinerama )
-	java? ( virtual/jdk )
+	java? ( >=virtual/jdk-1.5 )
 	media-libs/libpng
 	pulseaudio? ( media-sound/pulseaudio )
 	python? ( >=dev-lang/python-2.3[threads] )
@@ -62,8 +62,18 @@ DEPEND="${RDEPEND}
 	sys-power/iasl
 	vboxwebsrv? ( >=net-libs/gsoap-2.7.13 )"
 
+REQUIRED_USE="java? ( sdk ) python? ( sdk )"
 
 pkg_setup() {
+	if built_with_use sys-devel/gcc hardened && gcc-config -c | grep -qv -E "hardenednopie|vanilla"; then
+		eerror "The PIE feature provided by the \"hardened\" compiler is incompatible with ${PF}."
+		eerror "You must use gcc-config to select a profile without this feature.  You may"
+		eerror "choose either \"hardenednopie\", \"hardenednopiessp\" or \"vanilla\" profile;"
+		eerror "however, \"hardenednopie\" is preferred because it gives the most hardening."
+		eerror "Remember to run \"source /etc/profile\" before continuing.  See bug #339914."
+		die
+	fi
+
 	if ! use headless && ! use qt4 ; then
 		einfo "No USE=\"qt4\" selected, this build will not include"
 		einfo "any Qt frontend."
@@ -80,6 +90,9 @@ pkg_setup() {
 	if hasq distcc $FEATURES ; then
 		export PATH=`echo $PATH | sed 's%/usr/lib/distcc/bin:%%'`
 	fi
+	if use java; then
+		java-pkg-opt-2_pkg_setup
+	fi
 }
 
 src_prepare() {
@@ -90,14 +103,30 @@ src_prepare() {
 	sed -e "s/MY_LIBDIR/$(get_libdir)/" \
 		"${FILESDIR}"/${PN}-4-localconfig > LocalConfig.kmk || die
 
-	# unset useless/problematic mesa checks in configure
+	# unset useless/problematic checks in configure
 	epatch "${FILESDIR}/${PN}-4.0.0-mesa-check.patch"
+	epatch "${FILESDIR}/${PN}-4-makeself-check.patch"
+	epatch "${FILESDIR}/${PN}-4-mkisofs-check.patch"
 
-	# makeself is only used to build the installer
-	epatch "${FILESDIR}/${PN}-4.0.0-makeself-check.patch"
+	# fix build with --as-needed (bug #249295 and bug #350907)
+	epatch "${FILESDIR}/${PN}-4-asneeded.patch"
+
+	# Respect LDFLAGS
+	sed -e "s/_LDFLAGS\.${ARCH}*.*=/& ${LDFLAGS}/g" \
+		-i Config.kmk src/libs/xpcom18a4/Config.kmk || die
+
+	# We still want to use ${HOME}/.VirtualBox/Machines as machines dir.
+	epatch "${FILESDIR}/${PN}-4.0.2-restore_old_machines_dir.patch"
 
 	# add the --enable-vnc option to configure script (bug #348204)
 	epatch "${FILESDIR}/${PN}-4.0.0-vnc.patch"
+
+	# add correct java path
+	if use java ; then
+		sed "s:/usr/lib/jvm/java-6-sun:$(java-config -O):" \
+			-i "${S}"/Config.kmk || die
+		java-pkg-opt-2_src_prepare
+	fi
 }
 
 src_configure() {
@@ -107,9 +136,9 @@ src_configure() {
 	use pulseaudio || myconf+=" --disable-pulse"
 	use python     || myconf+=" --disable-python"
 	use java       || myconf+=" --disable-java"
-	use doc        || myconf+=" --disable-docs"
 	use vboxwebsrv && myconf+=" --enable-webservice"
 	use vnc        && myconf+=" --enable-vnc"
+	use doc        || myconf+=" --disable-docs"
 	if ! use headless ; then
 		use qt4 || myconf+=" --disable-qt4"
 	else
@@ -129,23 +158,19 @@ src_compile() {
 	source ./env.sh
 
 	# Force kBuild to respect C[XX]FLAGS and MAKEOPTS (bug #178529)
-	# and strip all flags
-	#strip-flags
 
-	MAKE="kmk" emake \
-		TOOL_GXX32_CC="$(tc-getCC)" TOOL_GXX32_CXX="$(tc-getCXX)" \
-		TOOL_GXX64_CC="$(tc-getCC)" TOOL_GXX64_CXX="$(tc-getCXX)" \
-		TOOL_GXX32_AS="$(tc-getCC)" TOOL_GXX32_AR="$(tc-getAR)" \
-		TOOL_GXX64_AS="$(tc-getCC)" TOOL_GXX64_AR="$(tc-getAR)" \
-		TOOL_GXX32_LD="$(tc-getCXX)" TOOL_GXX32_LD_SYSMOD="$(tc-getLD)" \
-		TOOL_GXX64_LD="$(tc-getCXX)" TOOL_GXX64_LD_SYSMOD="$(tc-getLD)" \
-		VBOX_GCC_OPT="${CFLAGS}" \
+	MAKE="kmk" emake KBUILD_VERBOSE=2 \
+		TOOL_GCC3_CC="$(tc-getCC)" TOOL_GCC3_CXX="$(tc-getCXX)" \
+		TOOL_GCC3_AS="$(tc-getCC)" TOOL_GCC3_AR="$(tc-getAR)" \
+		TOOL_GCC3_LD="$(tc-getCXX)" TOOL_GCC3_LD_SYSMOD="$(tc-getLD)" \
+		TOOL_GCC3_CFLAGS="${CFLAGS}" TOOL_GCC3_CXXFLAGS="${CXXFLAGS}" \
+		VBOX_GCC_OPT="${CFLAGS}" VBOX_GCC_R0_OPT="${CFLAGS}" VBOX_GCC_GC_OPT="${CFLAGS}"  \
 		TOOL_YASM_AS=yasm KBUILD_PATH="${S}/kBuild" \
 		all || die "kmk failed"
 }
 
 src_install() {
-	cd "${S}"/out/linux.*/release/bin || die
+	cd "${S}"/out/linux.${ARCH}/release/bin || die
 
 	# Create configuration files
 	insinto /etc/vbox
