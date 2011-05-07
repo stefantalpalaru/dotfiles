@@ -13,22 +13,22 @@
     <option name="SelectedTab" value="Common"/>
     <option name="Width" value="623"/>
   </group>
-  <group name="OpenFileDialog">
-    <option name="Height" value="495"/>
-    <option name="Width" value="661"/>
-  </group>
   <group name="Options">
+    <option name="AutoHyphenation" value="false"/>
     <option name="WindowState" value="1"/>
     <option name="YPosition" value="0"/>
   </group>
   <group name="OptionsDialog">
     <option name="Height" value="363"/>
-    <option name="SelectedTab" value="Keys"/>
+    <option name="SelectedTab" value="Styles"/>
     <option name="Width" value="541"/>
   </group>
   <group name="Style">
-    <option name="Base:fontFamily" value="DejaVu Sans"/>
+    <option name="Base:alignment" value="1"/>
+    <option name="Base:fontFamily" value="Nimbus Roman No9 L"/>
+    <option name="Base:fontSize" value="20"/>
     <option name="Regular Paragraph:spaceAfter" value="10"/>
+    <option name="UseCustomFonts" value="true"/>
   </group>
   <group name="ToggleButtonGroup">
     <option name="booksOrder" value="byAuthor"/>

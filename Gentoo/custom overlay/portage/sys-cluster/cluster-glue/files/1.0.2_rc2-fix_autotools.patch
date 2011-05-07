@@ -1,0 +1,20 @@
+--- cluster-glue-1.0.2-rc2.old/configure.ac	2010-01-05 09:53:47.000000000 +0100
++++ cluster-glue-1.0.2-rc2/configure.ac	2010-01-05 10:15:02.000000000 +0100
+@@ -492,11 +492,13 @@
+ AC_PATH_PROGS(PKGCONFIG, pkg-config)
+ AC_PATH_PROGS(XML2CONFIG, xml2-config)
+ 
+-AC_PATH_PROGS(XSLTPROC, xsltproc)
+-AM_CONDITIONAL(BUILD_DOC, test "x$XSLTPROC" != "x" )
+-if test "x$XSLTPROC" = "x"; then
+-   AC_MSG_WARN([xsltproc not installed, unable to (re-)build manual pages])
++AC_ARG_ENABLE([doc],
++ [  --enable-doc 	build documentation, [default=no]],
++ [enable_doc=$withval], [enable_doc=no])
++if test "x$enable_doc" != "xno"; then
++	AC_PATH_PROGS(XSLTPROC, xsltproc)
+ fi
++AM_CONDITIONAL(BUILD_DOC, test "x$enable_doc" != "xno" )
+ 
+ AC_PATH_PROGS(VALGRIND_BIN, valgrind, /usr/bin/valgrind)
+ AC_DEFINE_UNQUOTED(VALGRIND_BIN, "$VALGRIND_BIN", Valgrind command)

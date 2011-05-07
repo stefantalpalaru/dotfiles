@@ -1,0 +1,122 @@
+# ChangeLog for media-sound/zynaddsubfx
+# Copyright 2000-2005 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/media-sound/zynaddsubfx/ChangeLog,v 1.24 2005/06/30 13:25:03 josejx Exp $
+
+  30 Jun 2005; Joseph Jezak <josejx@gentoo.org> zynaddsubfx-2.2.1-r2.ebuild:
+  Marked ~ppc.
+
+*zynaddsubfx-2.2.1-r2 (18 May 2005)
+
+  18 May 2005; Eric Shattow <jnc@gentoo.org> +zynaddsubfx-2.2.1-r2.ebuild:
+  Quick update.
+
+*zynaddsubfx-2.2.1-r1 (17 May 2005)
+
+  17 May 2005; Eric Shattow <jnc@gentoo.org> +zynaddsubfx-2.2.1-r1.ebuild:
+  Requires version of mini-xml-2.2*
+
+  19 Apr 2005; Bryan Østergaard <kloeri@gentoo.org> metadata.xml:
+  Remove retired developer from metadata.xml.
+
+*zynaddsubfx-2.2.1 (03 May 2005)
+
+  03 May 2005; Eric Shattow <jnc@gentoo.org> +zynaddsubfx-2.2.1.ebuild:
+  Version Bump. Cleanups / purge old versions.
+
+*zynaddsubfx-2.2.0 (17 Apr 2005)
+
+  17 Apr 2005; Eric Shattow <jnc@gentoo.org> +zynaddsubfx-2.2.0.ebuild:
+  Version Bump. Works without applying patches.
+
+*zynaddsubfx-2.1.1-r1 (08 Jan 2005)
+
+  08 Jan 2005; Eric Shattow <jnc@gentoo.org> +zynaddsubfx-2.1.1-r1.ebuild:
+  typo fftw-2* to be fftw-3* per bug #70285.
+
+  18 Dec 2004; Jeremy Huddleston <eradicator@gentoo.org>
+  zynaddsubfx-2.1.1.ebuild:
+  Stable amd64, x86.
+
+  21 Oct 2004; Chris White <chriswhite@gentoo.org>
+  -files/zynaddsubfx-2.1.1-gcc34_mem_hack.patch,
+  +files/zynaddsubfx-2.1.1-gcc34_no_sse.patch:
+  Added Eric Shattow <shadow@serverart.org>'s modified no sse patch for gcc 3.4
+  per bug #68334.
+
+  19 Oct 2004; Jeremy Huddleston <eradicator@gentoo.org>
+  -zynaddsubfx-2.0.0.ebuild:
+  Removing old versions.
+
+*zynaddsubfx-2.1.1 (18 Oct 2004)
+
+  18 Oct 2004; Chris White <chriswhite@gentoo.org>
+  +files/zynaddsubfx-2.1.1-fltk_flags.patch,
+  +files/zynaddsubfx-2.1.1-fltk_version.patch,
+  +files/zynaddsubfx-2.1.1-gcc34_mem_hack.patch,
+  +files/zynaddsubfx-2.1.1-gcc_subscript_warning.patch,
+  +files/zynaddsubfx-2.1.1-sanitize_makefile.patch, +zynaddsubfx-2.1.1.ebuild:
+  Bumped to version 2.1.1 as per Bug #67164. Thanks to Eric Shattow for working
+  on the ebuild and pathches. Fixes some nice little stability issues.
+
+*zynaddsubfx-2.0.0 (29 Sep 2004)
+
+  29 Sep 2004; Frank van de Pol <fvdpol@gentoo.org>
+  +files/zynaddsubfx-2.0.0.patch, +zynaddsubfx-2.0.0.ebuild:
+  Version bump to 2.0.0 submitted by Eric Shattow <shadow@serverart.org>. Closes
+  bug #57801.
+
+  15 Sep 2004; Jeremy Huddleston <eradicator@gentoo.org>
+  zynaddsubfx-1.4.3.ebuild:
+  Stable amd64.
+
+  14 Aug 2004; Sven Wegener <swegener@gentoo.org> zynaddsubfx-1.4.3.ebuild:
+  Trimmed trailing whitespace.
+
+  13 Jun 2004; Jeremy Huddleston <eradicator@gentoo.org>
+  zynaddsubfx-1.4.3.ebuild:
+  Getting rid of virtual/jack.
+
+  16 Apr 2004; Travis Tilley <lv@gentoo.org> zynaddsubfx-1.4.3.ebuild:
+  added ~amd64 keyword
+
+  31 Mar 2004; Jeremy Huddleston <eradicator@gentoo.org>
+  zynaddsubfx-1.4.3.ebuild:
+  inherit eutils
+
+  21 Jan 2004; <torbenh@gentoo.org> zynaddsubfx-1.4.0.ebuild,
+  zynaddsubfx-1.4.2.ebuild, zynaddsubfx-1.4.3.ebuild:
+  bumped 1.4.3 to stable.
+
+*zynaddsubfx-1.4.3 (20 Sep 2003)
+
+  20 Sep 2003; jje <jje@gentoo.org> zynaddsubfx-1.4.2.ebuild,
+  zynaddsubfx-1.4.3.ebuild, files/zynaddsubfx-1.4.3.patch:
+  Version bump.
+
+  20 Sep 2003; jje <jje@gentoo.org> zynaddsubfx-1.4.2.ebuild:
+  Fixed fftw depend, requires 2.x, does not compile with 3.x.
+
+*zynaddsubfx-1.4.2 (17 Jul 2003)
+
+  17 Jul 2003; torbenh <torbenh@gentoo.org> Manifest zynaddsubfx-1.4.2.ebuild files/zynaddsubfx-1.4.2.patch :
+  Version Bump
+  And install examples to /usr/share/zynaddsubfx
+
+*zynaddsubfx-1.4.0 (08 May 2003)
+
+  08 May 2003; jje <jje@gentoo.org> zynaddsubfx-1.2.0.ebuild,
+  zynaddsubfx-1.2.0.ebuild, zynaddsubfx-1.4.0.ebuild,
+  files/zynaddsubfx-1.2.0.patch, files/zynaddsubfx-1.4.0.patch:
+  Version bump.
+  
+  Clean up patch and install docs.
+
+*zynaddsubfx-1.2.0 (23 Mar 2003)
+
+  23 Mar 2003; jje <jje@gentoo.org> zynaddsubfx-1.2.0.ebuild,
+  files/zynaddsubfx-1.2.0.patch:
+  Initial revision.
+  
+  Build still a little rough, configure and configuration / build scripts
+  have to be patched. Still, very cool synth.
+

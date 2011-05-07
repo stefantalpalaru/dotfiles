@@ -1,0 +1,260 @@
+diff -ru kid3-0.7/kid3/freedbclient.cpp kid3/kid3/freedbclient.cpp
+--- kid3-0.7/kid3/freedbclient.cpp	2006-05-28 15:05:28.000000000 +0200
++++ kid3/kid3/freedbclient.cpp	2006-10-07 21:32:21.000000000 +0200
+@@ -21,6 +21,7 @@
+ #include <qregexp.h>
+ #include <qsocket.h>
+ #include <qstatusbar.h>
++#include <qurl.h>
+ #include "freedbconfig.h"
+ #include "freedbclient.h"
+ 
+@@ -34,7 +35,8 @@
+  *
+  * @param sb status bar to display progress information.
+  */
+-FreedbClient::FreedbClient(QStatusBar *sb) : statusBar(sb)
++FreedbClient::FreedbClient(QStatusBar *sb) :
++ statusBar(sb), m_requestType(RT_None)
+ {
+ 	sock = new QSocket();
+ 	connect(sock, SIGNAL(hostFound()),
+@@ -158,7 +160,39 @@
+ 	}
+ #endif
+ 	sock->connectToHost(dest, destPort);
+-	isAlbumRequest = false;
++	m_requestType = RT_FindFreedbSearch;
++
++	statusBar->message(i18n("Connecting..."));
++}
++
++/**
++ * Find keyword in freedb with "cddb album" command of freedb2.org.
++ *
++ * @param cfg  freedb configuration
++ * @param what string with words to search
++ */
++void FreedbClient::findCddbAlbum(const FreedbConfig *cfg, QString what)
++{
++	QString destNamePort(getProxyOrDest(cfg, cfg->server));
++	QString dest;
++	int destPort;
++	splitNamePort(destNamePort, dest, destPort);
++	what.replace(QRegExp(" +"), " "); // collapse spaces
++	QUrl::encode(what);
++	what.replace("%20", "+"); // replace spaces by '+'
++	request = "GET http://" + cfg->server + cfg->cgiPath +
++		"?cmd=cddb+album+" + what + "&hello=noname+localhost+" +
++		"Kid3+" VERSION "&proto=1 HTTP/1.1\r\nHost: " + cfg->server +
++		"\r\nConnection: close\r\n\r\n";
++#if defined WIN32 && QT_VERSION < 300
++	int err = hostnameToAddress(dest);
++	if (err) {
++		statusBar->message(QString("WinSock error %1").arg(err));
++		return;
++	}
++#endif
++	sock->connectToHost(dest, destPort);
++	m_requestType = RT_FindCddbAlbum;
+ 
+ 	statusBar->message(i18n("Connecting..."));
+ }
+@@ -186,14 +220,23 @@
+  */
+ void FreedbClient::slotConnectionClosed()
+ {
+-	rcvStr = "";
+-	while (sock->canReadLine()) {
+-		rcvStr += sock->readLine();
+-	}
+-	if (isAlbumRequest) {
+-		emit albumFinished(rcvStr);
+-	} else {
+-		emit findFinished(rcvStr);
++	Q_ULONG len = sock->bytesAvailable();
++	QCString s;
++	s.resize(len + 1);
++	sock->readBlock(s.data(), len);
++	rcvStr = QString::fromUtf8(s.data());
++	switch (m_requestType) {
++		case RT_Album:
++			emit albumFinished(rcvStr);
++			break;
++		case RT_FindFreedbSearch:
++			emit findFinished(rcvStr);
++			break;
++		case RT_FindCddbAlbum:
++			emit findCddbAlbumFinished(rcvStr);
++			break;
++		default:
++			qWarning("Unknown freedb request type");
+ 	}
+ 	sock->close();
+ 	statusBar->message(i18n("Ready."));
+@@ -256,6 +299,6 @@
+ 	}
+ #endif
+ 	sock->connectToHost(dest, destPort);
+-	isAlbumRequest = true;
++	m_requestType = RT_Album;
+ 	statusBar->message(i18n("Connecting..."));
+ }
+diff -ru kid3-0.7/kid3/freedbclient.h kid3/kid3/freedbclient.h
+--- kid3-0.7/kid3/freedbclient.h	2006-01-05 19:15:21.000000000 +0100
++++ kid3/kid3/freedbclient.h	2006-10-07 16:06:53.000000000 +0200
+@@ -44,6 +44,13 @@
+ 	 */
+ 	void find(const FreedbConfig *cfg, QString what);
+ 	/**
++	 * Find keyword in freedb with "cddb album" command of freedb2.org.
++	 *
++	 * @param cfg  freedb configuration
++	 * @param what string with words to search
++	 */
++	void findCddbAlbum(const FreedbConfig *cfg, QString what);
++	/**
+ 	 * Request track list from freedb server.
+ 	 *
+ 	 * @param cfg freedb configuration
+@@ -92,6 +99,11 @@
+ 	 */
+ 	void findFinished(QString);
+ 	/**
++	 * Emitted when findCddbAlbum request finished.
++	 * Parameter: text containing result of findCddbAlbum request
++	 */
++	void findCddbAlbumFinished(QString);
++	/**
+ 	 * Emitted when album track data request finished.
+ 	 * Parameter: text containing result of album request
+ 	 */
+@@ -105,8 +117,13 @@
+ 	QString request;
+ 	/** buffer for received data */
+ 	QString rcvStr;
+-	/** true if last request was album track data request */
+-	bool isAlbumRequest;
++	/** type of current request */
++	enum RequestType {
++		RT_None,
++		RT_FindFreedbSearch,
++		RT_FindCddbAlbum,
++		RT_Album
++	} m_requestType;
+ };
+ 
+ #endif
+diff -ru kid3-0.7/kid3/freedbdialog.cpp kid3/kid3/freedbdialog.cpp
+--- kid3-0.7/kid3/freedbdialog.cpp	2006-02-23 22:48:14.000000000 +0100
++++ kid3/kid3/freedbdialog.cpp	2006-10-07 21:31:43.000000000 +0200
+@@ -24,6 +24,7 @@
+ #include <qlistbox.h>
+ #include <qlabel.h>
+ #include <qstatusbar.h>
++#include <qregexp.h>
+ #include "freedbconfig.h"
+ #include "freedbclient.h"
+ #include "freedbdialog.h"
+@@ -109,6 +110,7 @@
+ 	if (serverLayout && serverLabel && serverComboBox &&
+ 		cgiLabel && cgiLineEdit) {
+ 		static const char *serverList[] = {
++			"freedb2.org:80",
+ 			"freedb.freedb.org:80",
+ 			"at.freedb.org:80",
+ 			"au.freedb.org:80",
+@@ -155,6 +157,8 @@
+ 		client = new FreedbClient(statusBar);
+ 		connect(client, SIGNAL(findFinished(QString)),
+ 				this, SLOT(slotFindFinished(QString)));
++		connect(client, SIGNAL(findCddbAlbumFinished(QString)),
++				this, SLOT(slotFindCddbAlbumFinished(QString)));
+ 		connect(client, SIGNAL(albumFinished(QString)),
+ 				this, SLOT(slotAlbumFinished(QString)));
+ 	}
+@@ -315,7 +319,8 @@
+ {
+ 	FreedbConfig cfg;
+ 	getFreedbConfig(&cfg);
+-	client->find(&cfg, findLineEdit->currentText());
++//	client->find(&cfg, findLineEdit->currentText());
++	client->findCddbAlbum(&cfg, findLineEdit->currentText());
+ }
+ 
+ /**
+@@ -364,6 +369,58 @@
+ }
+ 
+ /**
++ * Process finished findCddbAlbum request.
++ *
++ * @param searchStr search data received
++ */
++void FreedbDialog::slotFindCddbAlbumFinished(QString searchStr)
++{
++/*
++210 exact matches found
++categ discid dtitle
++(more matches...)
++.
++or
++211 close matches found
++rock 920b810c Catharsis / Imago
++.
++theoretically, but never seen
++200	categ discid dtitle
++*/
++	QRegExp catIdTitleRe("([a-z]+)\\s+([0-9a-f]+)\\s+([^/]+ / .+)");
++	QStringList lines = QStringList::split(QRegExp("[\\r\\n]+"), searchStr);
++	bool inEntries = false;
++	albumListBox->clear();
++	for (QStringList::const_iterator it = lines.begin(); it != lines.end(); ++it) {
++		if (*it == ".") {
++			break;
++		}
++		if (inEntries) {
++			if (catIdTitleRe.exactMatch(*it)) {
++				new AlbumListItem(
++					albumListBox,
++					catIdTitleRe.cap(3),
++					catIdTitleRe.cap(1),
++					catIdTitleRe.cap(2));
++			}
++		} else {
++			if ((*it).startsWith("21") && (*it).find(" match") != -1) {
++				inEntries = true;
++			} else if ((*it).startsWith("200 ")) {
++				if (catIdTitleRe.exactMatch((*it).mid(4))) {
++					new AlbumListItem(
++						albumListBox,
++						catIdTitleRe.cap(3),
++						catIdTitleRe.cap(1),
++						catIdTitleRe.cap(2));
++				}
++			}
++		}
++	}
++	albumListBox->setFocus();
++}
++
++/**
+  * Process finished album data.
+  *
+  * @param albumStr album track data received
+diff -ru kid3-0.7/kid3/freedbdialog.h kid3/kid3/freedbdialog.h
+--- kid3-0.7/kid3/freedbdialog.h	2006-02-23 22:39:28.000000000 +0100
++++ kid3/kid3/freedbdialog.h	2006-10-07 17:19:08.000000000 +0200
+@@ -117,6 +117,12 @@
+ 	 */
+ 	void slotFindFinished(QString searchStr);
+ 	/**
++	 * Process finished findCddbAlbum request.
++	 *
++	 * @param searchStr search data received
++	 */
++	void slotFindCddbAlbumFinished(QString searchStr);
++	/**
+ 	 * Process finished album data.
+ 	 *
+ 	 * @param albumStr album track data received

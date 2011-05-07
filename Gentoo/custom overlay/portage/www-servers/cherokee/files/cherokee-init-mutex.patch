@@ -1,0 +1,12 @@
+diff -ur cherokee-svn/cherokee/post_track.c cherokee-patched/cherokee/post_track.c
+--- cherokee-svn/cherokee/post_track.c	2010-03-21 02:16:09.367787304 +0100
++++ cherokee-patched/cherokee/post_track.c	2010-07-26 15:27:59.694290408 +0200
+@@ -297,6 +297,8 @@
+ 	 */
+ 	n->last_purge = cherokee_bogonow_now;
+ 
++	CHEROKEE_MUTEX_INIT (&n->lock, CHEROKEE_MUTEX_FAST);
++
+ 	INIT_LIST_HEAD (&n->posts_list);
+ 
+ 	ret = cherokee_avl_init (&n->posts_lookup);

@@ -1,0 +1,11 @@
+--- heartbeat-3.0.2-rc2.old/Makefile.am	2009-12-19 19:46:52.000000000 +0100
++++ heartbeat-3.0.2-rc2/Makefile.am	2010-01-05 13:42:08.000000000 +0100
+@@ -54,7 +54,7 @@
+ 
+ # 'buildtools' must be first in the list: tools to aid building of remainder.
+ SUBDIRS	= buildtools $(LIBLTDL_DIR) debian pkg port replace include lib	\
+-          heartbeat membership telecom resources tools doc cts  \
++          heartbeat membership telecom resources tools cts  \
+           config contrib
+ 
+ HANDY_DOCS = doc/ChangeLog doc/GettingStarted.html doc/DirectoryMap.txt

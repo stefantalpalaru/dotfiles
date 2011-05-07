@@ -1,0 +1,10 @@
+--- src/CMakeLists.txt.orig	2008-08-24 21:56:01.000000000 +0200
++++ src/CMakeLists.txt	2008-08-24 21:55:45.000000000 +0200
+@@ -91,3 +91,7 @@
+ 
+ # add library dependencies needed by the executable (variables are filled by FIND_PACKAGE)
+ TARGET_LINK_LIBRARIES( qpitch ${QT_LIBRARIES} ${PORTAUDIO_LIBRARIES} ${FFTW3_LIBRARIES} )
++
++INSTALL( TARGETS qpitch
++	RUNTIME DESTINATION bin
++)
