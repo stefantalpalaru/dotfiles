@@ -160,4 +160,5 @@ let Tlist_WinWidth = 50
 
 " ==auto reload modified files==
 set autoread
+set modeline
 

@@ -42,11 +42,6 @@ export PATH="$PATH:/usr/local/bin:/usr/local/sbin:/opt/bin:/usr/games/bin:~/scri
 #  variables  #
 ###############
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
 export EDITOR="vim"
 export PAGER="less"
 export BROWSER="firefox"
@@ -58,9 +53,11 @@ export SVGALIB_DEFAULT_MODE=G640x480x256
 #export GGI_DEFMODE="80x40[T]"
 export GGI_DISPLAY="svgalib"
 export AAOPTS="-dim -bold -normal -boldfont -extended -eight"
-export PS1="\[\033[0;31m\]\l \[\033[1;33m\]\d \[\033[1;36m\]\t \[\033[0;32m\]|\w|\[\033[0m\]\n\u\\$ "
+export PS1="[\H] \[\033[0;31m\]\l \[\033[1;33m\]\d \[\033[1;36m\]\t \[\033[0;32m\]|\w|\[\033[0m\]\n\u\\$ "
 export BC_ENV_ARGS="-lq /home/stefan/bc.rc"
 export ECHANGELOG_USER="Stefan Talpalaru (stefantalpalaru) <stefantalpalaru@yahoo.com>"
+export LANG='en_US.utf8'
+export LC_ALL='en_US.utf8'
 
 #############
 #  aliases  #
