@@ -1,0 +1,5 @@
+pre_pkg_setup() {
+ elog "removing --param args from CFLAGS for $PN"
+ CFLAGS="`echo $CFLAGS | sed 's/--param [^ ]\+//g'`"
+ CXXFLAGS="${CFLAGS}"
+}

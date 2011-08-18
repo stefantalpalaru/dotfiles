@@ -1,0 +1,5 @@
+pre_pkg_setup() {
+ elog "removing graphite specific CFLAGS for $PN"
+ CFLAGS="`echo $CFLAGS | sed 's/-floop-interchange\|-floop-strip-mine\|-floop-block//g'`"
+ CXXFLAGS="${CFLAGS}"
+}
