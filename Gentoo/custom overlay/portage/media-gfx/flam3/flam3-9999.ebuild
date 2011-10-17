@@ -23,7 +23,7 @@ DEPEND="dev-libs/libxml2
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	mkdir m4
+	epatch "${FILESDIR}"/${PN}-libpng15.patch
 	eautoreconf
 }
 
