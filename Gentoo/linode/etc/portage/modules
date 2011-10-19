@@ -1,4 +1,0 @@
-#portdbapi.auxdbmodule = cache.cdb.database
-#eclass_cache.dbmodule = cache.cdb.database
-
-portdbapi.auxdbmodule = cache.metadata_overlay.database
