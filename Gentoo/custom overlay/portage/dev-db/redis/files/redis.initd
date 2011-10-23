@@ -25,6 +25,7 @@ start() {
 		--exec "${REDIS_EXEC}" \
 		-- ${REDIS_OPTS}
 	ret=$?
+	sleep 1
 	[ -e "${REDIS_UNIXSOCKET}" ] && chmod ${REDIS_UNIXSOCKET_MODE} "${REDIS_UNIXSOCKET}"
 	eend ${ret}
 }
