@@ -215,7 +215,7 @@ sys-apps/pciutils -zlib
 sys-libs/uclibc nls
 dev-lang/python threads -tk berkdb sqlite doc
 net-libs/courier-authlib berkdb
-mail-mta/postfix sasl
+mail-mta/postfix sasl berkdb
 dev-libs/cyrus-sasl berkdb authdaemond
 net-mail/courier-imap berkdb
 dev-scheme/guile networking threads regex deprecated
