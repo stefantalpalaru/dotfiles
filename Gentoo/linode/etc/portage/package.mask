@@ -1,0 +1,5 @@
+>dev-db/postgis-1.5.2
+=net-libs/libsoup-2.34.1
+=net-libs/libsoup-gnome-2.34.1
+=app-admin/webapp-config-1.50.18
+

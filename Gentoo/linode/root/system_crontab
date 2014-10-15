@@ -1,0 +1,8 @@
+# system cron jobs
+
+29   *  * * *  rm -f /var/spool/cron/lastrun/cron.hourly
+39   3  * * *  rm -f /var/spool/cron/lastrun/cron.daily
+9    4  * * 6  rm -f /var/spool/cron/lastrun/cron.weekly
+15   5  1 * *  rm -f /var/spool/cron/lastrun/cron.monthly
+*/10 *  * * *  test -x /usr/sbin/run-crons && /usr/sbin/run-crons
+

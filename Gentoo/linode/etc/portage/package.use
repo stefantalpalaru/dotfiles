@@ -1,0 +1,300 @@
+sys-libs/glibc userlocales glibc-omitfp nptl
+media-video/mplayer -gtk live lzo network real rtc xanim matroska sdl dga xv iconv dvd dvdread xvmc amr dts unicode dvdnav srt rar a52 amrnb amrwb lame vidix
+media-sound/amarok -real amazon visualization musicbrainz
+dev-python/pygtk gnome
+net-voip/linphone gnome
+app-emulation/qemu-softmmu kqemu sdl
+media-video/vlc freetype wxwindows live mad stream vcd dvd cdio vcdx
+app-text/xpdf nodrm
+games-emulation/advancemame sdl
+games-emulation/advancemenu sdl
+app-text/djvu qt threads xml -nsplugin
+www-servers/apache threads
+dev-php/php curl gd mysql
+dev-php/mod_php curl gd mysql
+dev-php/php-cgi curl gd mysql fastcgi
+www-servers/lighttpd pcre mysql php
+app-cdr/k3b ffmpeg encode vcd sndfile
+media-sound/audacity libsamplerate mad soundtouch vamp
+dev-ml/lablgtk svg
+net-p2p/amule-cvs optimize kad nosystray unicode
+net-irc/weechat -ssl
+media-video/avidemux a52 mad
+dev-lang/php curl gd mysql postgres force-cgi-redirect cgi -apache2 -ncurses -readline session -sharedmem threads ctype pcre nls mysqli fastbuild unicode xml simplexml cli posix reflection -suhosin spl xsl sqlite json soap filter
+net-news/liferea gtkhtml
+www-client/epiphany firefox
+www-client/epiphany-extensions firefox
+www-client/galeon firefox
+dev-libs/libxml2 python icu
+www-client/kazehakase firefox
+media-sound/jack-audio-connection-kit jack-tmpfs
+media-sound/sox mad
+media-sound/mpfc mad
+sys-devel/gcc nopie nossp -gcj -fortran graphite
+app-emulation/kqemu sdl
+x11-base/xorg-x11 opengl xv
+media-video/transcode mjpeg quicktime lzo sdl -imagemagick
+media-video/mjpegtools yv12
+media-video/lives libvisual matroska theora
+media-libs/xine-lib mad asf
+media-sound/cmus mad
+media-sound/moc mad curl -ffmpeg
+dev-lang/perl doc
+sys-devel/libperl
+app-text/pinfo -readline
+x11-libs/wxGTK unicode opengl
+x11-wm/fluxbox gnome kde
+net-p2p/mldonkey fasttrack gnutella
+media-sound/easytag -aac
+www-servers/cherokee fcgi threads admin -ffmpeg
+media-libs/libvorbis aotuv
+media-sound/quodlibet mad
+kde-misc/krecipes sqlite mysql
+x11-libs/qt mysql qt3support opengl -accessibility
+media-sound/kid3 musicbrainz
+x11-base/kdrive speedo type1 xv
+media-plugins/alsa-plugins -ffmpeg
+sys-apps/module-init-tools no-old-linux
+media-sound/mpd audiofile flac mikmod musepack unicode iconv id3 sqlite
+media-sound/ncmpc clock-screen key-screen mouse search-screen -lirc
+media-libs/speex vorbis-psy
+www-plugins/gnash mad
+dev-db/mysql latin1 embedded
+virtual/mysql embedded
+net-libs/libjingle
+media-plugins/gst-plugins-farsight jingle jpeg2k
+media-libs/farsight jingle
+net-p2p/gnunet sqlite
+media-sound/lame -gtk
+kde-base/kopete addbookmarks autoreplace connectionstatus contactnotes highlight history nowlistening sms statistics texteffect webpresence irc alias
+media-gfx/gimp svg gtkhtml smp lcms mng pdf python
+media-gfx/comix rar
+kde-base/kdelibs arts
+sys-apps/dbus qt3
+net-im/gaim custom-cflags
+media-video/tcvp mad
+dev-libs/pwlib ldap
+net-dialup/ppp atm dhcp -eap-tls
+x11-base/xorg-server xorg dri -hal xvfb
+
+media-fonts/acroread-asianfonts nls
+media-fonts/alee-fonts nls
+media-fonts/aquafont nls
+media-fonts/aquapfont nls
+media-fonts/arabeyes-fonts nls
+media-fonts/arkpandora nls
+media-fonts/arphicfonts nls
+media-fonts/artwiz-aleczapka-en nls
+media-fonts/artwiz-fonts nls
+media-fonts/baekmuk-fonts nls
+media-fonts/cheapskatefonts nls
+media-fonts/arphicfonts nls
+media-fonts/corefonts nls
+media-fonts/cronyx-fonts nls
+media-fonts/culmus nls
+media-fonts/dejavu nls
+media-fonts/ec-fonts-mftraced nls
+media-fonts/efont-unicode nls
+media-fonts/encodings nls
+media-fonts/essays1743 nls
+media-fonts/sil-ezra nls
+media-fonts/farsi-fonts nls
+media-fonts/opendesktop-fonts nls
+media-fonts/font-adobe-100dpi nls
+media-fonts/font-adobe-75dpi nls
+media-fonts/font-adobe-utopia-100dpi nls
+media-fonts/font-adobe-utopia-75dpi nls
+media-fonts/font-adobe-utopia-type1 nls
+media-fonts/font-alias nls
+media-fonts/font-arabic-misc nls
+media-fonts/font-bh-100dpi nls
+media-fonts/font-bh-75dpi nls
+media-fonts/font-bh-lucidatypewriter-100dpi nls
+media-fonts/font-bh-lucidatypewriter-75dpi nls
+media-fonts/font-bh-ttf nls
+media-fonts/font-bh-type1 nls
+media-fonts/font-bitstream-100dpi nls
+media-fonts/font-bitstream-75dpi nls
+media-fonts/font-bitstream-speedo nls
+media-fonts/font-bitstream-type1 nls
+media-fonts/font-cronyx-cyrillic nls
+media-fonts/font-cursor-misc nls
+media-fonts/font-daewoo-misc nls
+media-fonts/font-dec-misc nls
+media-fonts/font-ibm-type1 nls
+media-fonts/font-isas-misc nls
+media-fonts/font-jis-misc nls
+media-fonts/font-micro-misc nls
+media-fonts/font-misc-cyrillic nls
+media-fonts/font-misc-ethiopic nls
+media-fonts/font-misc-meltho nls
+media-fonts/font-misc-misc nls
+media-fonts/font-mutt-misc nls
+media-fonts/font-schumacher-misc nls
+media-fonts/font-screen-cyrillic nls
+media-fonts/font-sony-misc nls
+media-fonts/font-sun-misc nls
+media-fonts/font-util nls
+media-fonts/font-winitzki-cyrillic nls
+media-fonts/font-xfree86-type1 nls
+media-fonts/free-bangla-font nls
+media-fonts/freefonts nls
+media-fonts/fs-fonts nls
+media-fonts/gnu-gs-fonts-other nls
+media-fonts/gnu-gs-fonts-std nls
+media-fonts/hkscs-ming nls
+media-fonts/hunkyfonts nls
+media-fonts/intlfonts nls
+media-fonts/ipamonafont nls
+media-fonts/ja-ipafonts nls
+media-fonts/jisx0213-fonts nls
+media-fonts/kacst-fonts nls
+media-fonts/kochi-substitute nls
+media-fonts/konfont nls
+media-fonts/lfpfonts-fix nls
+media-fonts/lfpfonts-var nls
+media-fonts/mathematica-fonts nls
+media-fonts/mikachan-font nls
+media-fonts/monafont nls
+media-fonts/mplus-fonts nls
+media-fonts/mplus-outline-fonts nls
+media-fonts/nepali-fonts nls
+media-fonts/oto nls
+media-fonts/pcf2bdf nls
+media-fonts/sazanami nls
+media-fonts/sgi-fonts nls
+media-fonts/sharefonts nls
+media-fonts/shinonome nls
+media-fonts/tengwar-fonts nls
+media-fonts/terminus-font nls
+media-fonts/texcm-ttf nls
+media-fonts/ttf-bitstream-vera nls
+media-fonts/sil-gentium nls
+media-fonts/twmoefonts nls
+media-fonts/unfonts nls
+media-fonts/unfonts-extra nls
+media-fonts/unifont nls
+media-fonts/urw-fonts nls
+media-fonts/urwvn-fonts nls
+media-fonts/vc-fonts nls
+media-fonts/wqy-bitmapfont nls
+media-fonts/x11fonts-jmk nls
+media-fonts/zh-kcfonts nls
+
+dev-java/sun-jre-bin -nsplugin
+app-portage/portage-bashrc-ng distclean perpackage resumemerge
+media-sound/normalize mad
+media-gfx/imagemagick gs djvu fontconfig hdri jbig -jpeg2k -X -svg
+x11-libs/cairo pdf svg cleartype -X
+app-text/ghostscript-gpl djvu jpeg2k
+dev-libs/boost threads eselect
+media-sound/soundconverter flac
+app-admin/conky mpd math audacious hddtemp
+media-libs/netpbm jbig jpeg2k
+media-tv/xawtv lirc xext motif
+media-tv/zapping lirc vdr
+media-tv/kdetv lirc
+media-tv/xdtv lirc aqua_theme xv
+net-im/psi extras insecure-patches
+media-libs/mlt lame xine sdl -qt3 melt
+net-misc/iputils doc
+app-text/evince djvu
+media-sound/lmms samplerate sdl
+www-client/firefox java mozbranding mozdevelop custom-optimization
+app-text/acroread -nsplugin
+app-admin/gkrellm lm_sensors
+sys-power/cpufreqd lm_sensors
+www-plugins/mplayerplug-in divx realmedia wmp gmedia firefox
+media-video/qdvdauthor mplayer
+media-plugins/audacious-plugins flac musepack sndfile timidity wavpack wma chardet projectm
+media-sound/audacious chardet
+xfce-base/thunar plugins
+dev-lang/erlang smp
+media-libs/libsdl opengl
+sys-apps/pciutils -zlib
+sys-libs/uclibc nls
+dev-lang/python threads -tk berkdb sqlite doc
+net-libs/courier-authlib berkdb
+mail-mta/postfix sasl berkdb
+dev-libs/cyrus-sasl berkdb authdaemond
+net-mail/courier-imap berkdb
+dev-scheme/guile networking threads regex deprecated
+www-apps/mediawiki mysql
+media-gfx/inkscape lcms postscript
+media-libs/alsa-lib alisp midi
+media-gfx/eog lcms
+net-ftp/ftpcube sftp
+media-gfx/showimg kipi
+media-gfx/blender ffmpeg sdl blender-game openal player
+app-emulation/bochs sdl wxwindows
+media-sound/exaile cdparanoia libsexy musepack streamripper equalizer
+sci-electronics/geda examples
+sci-electronics/kicad examples
+dev-cpp/gtkmm -accessibility
+dev-util/git -tk
+app-editors/vim -gpm -vim-with-x
+#dev-python/gnome-python-extras firefox
+media-sound/gnusound audiofile lame
+net-misc/streamtuner python shout xiph
+media-libs/flac cxx
+dev-java/swt xulrunner
+media-sound/traverso lv2
+net-proxy/privoxy threads
+media-gfx/pstoedit plotutils
+net-libs/webkitgtk gstreamer sqlite -svg
+media-video/ffmpeg sdl
+media-sound/ardour freesound nls
+x11-libs/fltk opengl -cairo
+app-accessibility/festival mbrola
+media-gfx/hugin enblend sift lapack
+dev-python/storm sqlite
+app-portage/layman git subversion
+dev-python/django mysql postgres sqlite examples
+net-im/pidgin sasl
+media-libs/libquicktime -ffmpeg
+dev-libs/gdl gnome
+#media-gfx/greycstoration lapack
+media-sound/vorbis-tools ogg123
+app-crypt/gpgme pth
+app-text/fbreader -qt3 -gtk
+dev-db/postgresql-server perl python
+media-gfx/synfigstudio fmod
+media-gfx/synfig -ffmpeg
+x11-terms/rxvt-unicode perl afterimage
+dev-util/subversion webdav-neon nls
+x11-libs/qt-gui accessibility mng
+net-im/skype qt-static
+dev-lang/tcl -threads
+dev-lang/tk -threads
+kde-base/okular chm djvu htmlhandbook ebook
+media-sound/sonata lyrics
+net-misc/tightvnc java server
+kde-base/krdc vnc
+x11-drivers/nvidia-drivers custom-cflags
+x11-libs/qt-sql mysql
+dev-python/PyQt4 webkit
+app-shells/bash plugins
+sys-power/nut cgi snmp
+net-misc/tigervnc server
+app-portage/eix sqlite optimization strong-optimization
+net-libs/libsoup gnome
+media-libs/tiff -opengl
+net-libs/xulrunner java custom-optimization
+dev-libs/xerces-c icu
+net-libs/opal h323 sip
+net-libs/ptlib wav pipechan
+www-client/opera -qt3
+dev-lisp/sbcl ldb
+www-plugins/adobe-flash -64bit
+net-misc/openssh -X
+sys-process/psmisc -X
+sys-apps/groff -X
+app-misc/mc -X
+dev-python/imaging -X
+media-libs/freetype -X
+app-admin/webmin postgres
+x11-libs/pango -X
+media-fonts/dejavu -X
+app-text/ghostscript-gpl -X -jpeg2k
+sys-fs/udev extras
+

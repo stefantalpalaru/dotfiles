@@ -36,7 +36,7 @@ case $TERM in
 		;;
 esac
 
-export PATH="$PATH:/usr/local/bin:/usr/local/sbin:/opt/bin:/usr/games/bin:~/scripts:/usr/local/WordNet-2.1/bin:/usr/local/games:~/bin:/sbin"
+export PATH="$PATH:/opt/bin:/usr/games/bin:/usr/local/games"
 
 ###############
 #  variables  #
@@ -45,17 +45,7 @@ export PATH="$PATH:/usr/local/bin:/usr/local/sbin:/opt/bin:/usr/games/bin:~/scri
 export EDITOR="vim"
 export PAGER="less"
 export BROWSER="firefox"
-export CFLAGS="-O3 -march=prescott -pipe -fomit-frame-pointer -fno-ident"
-export CXXFLAGS="$CFLAGS"
-export LDFLAGS="-s"
-export SVGALIB_DEFAULT_MODE=G640x480x256
-#export GGI_DISPLAY="vcsa:-shade"
-#export GGI_DEFMODE="80x40[T]"
-export GGI_DISPLAY="svgalib"
-export AAOPTS="-dim -bold -normal -boldfont -extended -eight"
 export PS1="[\H] \[\033[0;31m\]\l \[\033[1;33m\]\d \[\033[1;36m\]\t \[\033[0;32m\]|\w|\[\033[0m\]\n\u\\$ "
-export BC_ENV_ARGS="-lq /home/stefan/bc.rc"
-export ECHANGELOG_USER="Stefan Talpalaru (stefantalpalaru) <stefantalpalaru@yahoo.com>"
 export LANG='en_US.utf8'
 export LC_ALL='en_US.utf8'
 
@@ -69,15 +59,13 @@ alias du='du -h'
 alias df='df -h'
 alias calc='bc'
 alias tetris='tetris-bsd -l9 -p'
-alias info='pinfo'
+#alias info='pinfo'
 #alias man='pinfo -m'
 alias MKDOSFS='mkdosfs -f 1 -r 16 -F 12 -s 2 -S 512 /dev/fd0'
 alias matrix='cmatrix -lbau 1; setfont lat2-12'
 alias Lindent='indent -kr -i8 -ts8 -br -ce -bap -sob -l80 -pcs -cs -ss -bs -di0 -nbc -lp -psl'
 alias cal='cal -m'
 alias x='cd /src; startx'
-alias set_wallpaper='Esetroot -c -s /home/stefan/src/images/wallpaper'
-alias ink='escputil -iq -r /dev/usblp0'
 alias gpull='find -name "*.pyc" -delete; git pull'
 alias vlc='vlc --alsa-audio-device surround51'
 
