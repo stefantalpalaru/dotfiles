@@ -9,6 +9,9 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "	    for OpenVMS:  sys$login:.vimrc
 
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
@@ -91,10 +94,11 @@ endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
-command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 	 	\ | wincmd p | diffthis
 
-colorscheme evening
+" pathogen
+call pathogen#infect()
 
 map <C-Up> :tabnew<CR>
 "map <C-Down> :tabclose<CR>
@@ -104,29 +108,13 @@ map <C-Right> gt
 
 set statusline=%m%F%r%h%w\ %y\ [line:%04l\ col:%04v]\ [%p%%]\ [lines:%L]
 set laststatus=2
-set shiftwidth=1
+"set shiftwidth=4
+"set tabstop=4
+"set softtabstop=4
+"set expandtab
 set ic
 set scs
 set tags=./tags;
-
-
-" python settings
-"autocmd BufRead *.py setlocal shiftwidth=4
-"autocmd BufRead *.py setlocal tabstop=4
-"autocmd BufRead *.py setlocal softtabstop=4
-"autocmd BufRead *.py setlocal expandtab
-
-" htmldjango
-au FileType htmldjango setlocal shiftwidth=4
-au FileType htmldjango setlocal tabstop=4
-au FileType htmldjango setlocal softtabstop=4
-au FileType htmldjango setlocal expandtab
-
-" perl
-au FileType perl setlocal shiftwidth=4
-au FileType perl setlocal tabstop=4
-au FileType perl setlocal softtabstop=4
-au FileType perl setlocal expandtab
 
 " ==Nekthuth==
 let g:nekthuth_sbcl = "/usr/bin/sbcl"
@@ -160,5 +148,134 @@ let Tlist_WinWidth = 50
 
 " ==auto reload modified files==
 set autoread
+
 set modeline
+set number
+
+" ==session options==
+set ssop-=options
+set ssop-=folds
+
+" htmldjango
+au FileType htmldjango setlocal shiftwidth=4
+au FileType htmldjango setlocal tabstop=4
+au FileType htmldjango setlocal softtabstop=4
+au FileType htmldjango setlocal expandtab
+
+" jinja
+au FileType jinja setlocal shiftwidth=4
+au FileType jinja setlocal tabstop=4
+au FileType jinja setlocal softtabstop=4
+au FileType jinja setlocal expandtab
+
+" perl
+au FileType perl setlocal shiftwidth=4
+au FileType perl setlocal tabstop=4
+au FileType perl setlocal softtabstop=4
+au FileType perl setlocal expandtab
+
+" js
+au FileType javascript setlocal shiftwidth=4
+au FileType javascript setlocal tabstop=4
+au FileType javascript setlocal softtabstop=4
+au FileType javascript setlocal expandtab
+
+" nim
+autocmd FileType nim call s:NimConfigure()
+function s:NimConfigure()
+    setlocal shiftwidth=2
+    setlocal tabstop=8
+    setlocal softtabstop=2
+    setlocal expandtab
+    setlocal textwidth=80
+    " inspired by https://github.com/vivien/vim-linux-coding-style
+    highlight default link NimError ErrorMsg
+    syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
+    " Highlight trailing whitespace, unless we're in insert mode and the
+    " cursor's placed right after the whitespace. This prevents us from having
+    " to put up with whitespace being highlighted in the middle of typing
+    " something
+    autocmd InsertEnter * match NimError /\s\+\%#\@<!$/
+    autocmd InsertLeave * match NimError /\s\+$/
+endfunction
+
+" color scheme
+"colorscheme evening
+set background=dark
+colorscheme solarized
+
+" disable the Background Color Erase that messes with some color schemes
+set t_ut=
+
+" vim-slime
+"let g:slime_target = "tmux"
+let g:slime_target = "screen"
+
+" gitgutter
+au VimEnter * highlight clear SignColumn
+
+" haskellmode-vim
+let g:haddock_browser="/usr/bin/firefox"
+
+" go
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+" syntastic
+"let g:syntastic_mode_map = { 'mode': 'active',
+			"\ 'active_filetypes': [],
+			"\ 'passive_filetypes': [] }
+"let g:syntastic_python_checkers = ['flake8']
+"let g:syntastic_python_flake8_args = '--ignore=E,W,F403,F405 --select=F,C'
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+" ALE
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'c': ['clang'],
+\}
+let g:ale_python_flake8_args = '--ignore=E,W,F403,F405 --select=F,C'
+let g:ale_c_clang_options = '-std=c11 -Wall -Wextra -fexceptions -DNDEBUG'
+set statusline+=%{ALEGetStatusLine()}
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_format = '%linter%: %s'
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" smarty
+au BufRead,BufNewFile *.tpl set filetype=smarty
+
+" gnuplot
+au BufRead,BufNewFile *.gnuplot set filetype=gnuplot
+
+" vala
+au BufRead,BufNewFile *.vala,*.vapi,*.vala.in set filetype=vala efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab
+
+" genie
+au BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab
+
+" youcompleteme
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/examples/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let b:ycm_largefile = 1
+
+" neocomplete
+let g:neocomplete#enable_at_startup = 1
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" VUE
+au BufRead,BufNewFile *.vue set filetype=xml
+
+" airline
+let g:airline_theme = 'solarized'
+let g:airline_solarized_bg = 'dark'
+let g:airline_powerline_fonts = 1
 
