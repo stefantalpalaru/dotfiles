@@ -255,12 +255,12 @@ au BufRead,BufNewFile *.vala,*.vapi,*.vala.in set filetype=vala efm=%f:%l.%c-%[%
 " genie
 au BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab
 
-" youcompleteme
-let g:ycm_enable_diagnostic_signs = 0
-let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/examples/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_autoclose_preview_window_after_completion = 1
-let b:ycm_largefile = 1
+"" youcompleteme
+"let g:ycm_enable_diagnostic_signs = 0
+"let g:ycm_global_ycm_extra_conf = '/usr/share/vim/vimfiles/third_party/ycmd/examples/.ycm_extra_conf.py'
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_autoclose_preview_window_after_completion = 1
+"let b:ycm_largefile = 1
 
 " neocomplete
 let g:neocomplete#enable_at_startup = 1
