@@ -1,4 +1,6 @@
-unlet! skip_defaults_vim
+scriptencoding utf-8
+
+unlet! g:skip_defaults_vim
 source $VIMRUNTIME/defaults.vim
 
 " pathogen
@@ -10,8 +12,8 @@ set history=50		" keep 50 lines of command line history
 set autoindent		" always set autoindenting on
 set statusline=%m%F%r%h%w\ %y\ [line:%04l\ col:%04v]\ [%p%%]\ [lines:%L]
 set laststatus=2
-set ic
-set scs
+set ignorecase
+set smartcase
 set tags=./tags;
 set modeline
 set number
@@ -20,8 +22,8 @@ set autoread		" auto reload modified files
 set t_ut=		" disable the Background Color Erase that messes with some color schemes
 
 " session options
-set ssop-=options
-set ssop-=folds
+set sessionoptions-=options
+set sessionoptions-=folds
 
 " simplify common tab operations
 map <C-Up> :tabnew<CR>
@@ -32,7 +34,7 @@ map <C-Right> gt
 
 " self-cleaning augroup, to avoid problem when sourcing ~/.vimrc multiple times
 augroup defgroup
-  autocmd!
+	autocmd!
 augroup END
 
 " Drupal PHP files with strange extensions
@@ -40,67 +42,67 @@ autocmd defgroup BufNewFile,BufRead *.module set filetype=php
 autocmd defgroup BufNewFile,BufRead *.engine set filetype=php
 
 " Flex
-au defgroup BufNewFile,BufRead *.mxml set filetype=mxml
-au defgroup BufNewFile,BufRead *.as set filetype=actionscript
+autocmd defgroup BufNewFile,BufRead *.mxml set filetype=mxml
+autocmd defgroup BufNewFile,BufRead *.as set filetype=actionscript
 
 " Nekthuth
-let g:nekthuth_sbcl = "/usr/bin/sbcl"
+let g:nekthuth_sbcl = '/usr/bin/sbcl'
 " execute form
-au defgroup FileType lisp map <C-J> :NekthuthSexp<CR>
-au defgroup FileType lisp map <C-E> :NekthuthTopSexp<CR>
+autocmd defgroup FileType lisp map <C-J> :NekthuthSexp<CR>
+autocmd defgroup FileType lisp map <C-E> :NekthuthTopSexp<CR>
 " Can prefix with number
-au defgroup FileType lisp map <C-K> :NekthuthMacroExpand<CR>
+autocmd defgroup FileType lisp map <C-K> :NekthuthMacroExpand<CR>
 " Close and re-open the nekthuth
-au defgroup FileType lisp map <C-I> :NekthuthClose<CR>:NekthuthOpen<CR>:redraw!<CR>
+autocmd defgroup FileType lisp map <C-I> :NekthuthClose<CR>:NekthuthOpen<CR>:redraw!<CR>
 " Close it
-au defgroup FileType lisp map <C-W> :NekthuthClose<CR>
+autocmd defgroup FileType lisp map <C-W> :NekthuthClose<CR>
 " Get word underneath cursor
-au defgroup FileType lisp map <C-H> :Clhelp <C-R><C-W><CR>
+autocmd defgroup FileType lisp map <C-H> :Clhelp <C-R><C-W><CR>
 " Interrupt the interpretor
-au defgroup FileType lisp map <C-C> :NekthuthInterrupt<CR>
+autocmd defgroup FileType lisp map <C-C> :NekthuthInterrupt<CR>
 " Find the source location of the symbol
-au defgroup FileType lisp map <C-]> :NekthuthSourceLocation<CR>
+autocmd defgroup FileType lisp map <C-]> :NekthuthSourceLocation<CR>
 
 " taglist
 map <F4> :TlistToggle<CR>
-let Tlist_WinWidth = 50
+let g:Tlist_WinWidth = 50
 
 " htmldjango
-au defgroup FileType htmldjango setlocal shiftwidth=4
-au defgroup FileType htmldjango setlocal softtabstop=4
-au defgroup FileType htmldjango setlocal expandtab
+autocmd defgroup FileType htmldjango setlocal shiftwidth=4
+autocmd defgroup FileType htmldjango setlocal softtabstop=4
+autocmd defgroup FileType htmldjango setlocal expandtab
 
 " Jinja
-au defgroup FileType jinja setlocal shiftwidth=4
-au defgroup FileType jinja setlocal softtabstop=4
-au defgroup FileType jinja setlocal expandtab
+autocmd defgroup FileType jinja setlocal shiftwidth=4
+autocmd defgroup FileType jinja setlocal softtabstop=4
+autocmd defgroup FileType jinja setlocal expandtab
 
 " Perl
-au defgroup FileType perl setlocal shiftwidth=4
-au defgroup FileType perl setlocal softtabstop=4
-au defgroup FileType perl setlocal expandtab
+autocmd defgroup FileType perl setlocal shiftwidth=4
+autocmd defgroup FileType perl setlocal softtabstop=4
+autocmd defgroup FileType perl setlocal expandtab
 
 " js
-au defgroup FileType javascript setlocal shiftwidth=4
-au defgroup FileType javascript setlocal softtabstop=4
-au defgroup FileType javascript setlocal expandtab
+autocmd defgroup FileType javascript setlocal shiftwidth=4
+autocmd defgroup FileType javascript setlocal softtabstop=4
+autocmd defgroup FileType javascript setlocal expandtab
 
 " Nim
 autocmd defgroup FileType nim call s:NimConfigure()
 function s:NimConfigure()
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal expandtab
-    setlocal textwidth=80
-    " inspired by https://github.com/vivien/vim-linux-coding-style
-    highlight default link NimError ErrorMsg
-    syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
-    " Highlight trailing whitespace, unless we're in insert mode and the
-    " cursor's placed right after the whitespace. This prevents us from having
-    " to put up with whitespace being highlighted in the middle of typing
-    " something
-    autocmd defgroup InsertEnter * match NimError /\s\+\%#\@<!$/
-    autocmd defgroup InsertLeave * match NimError /\s\+$/
+	setlocal shiftwidth=2
+	setlocal softtabstop=2
+	setlocal expandtab
+	setlocal textwidth=80
+	" inspired by https://github.com/vivien/vim-linux-coding-style
+	highlight default link NimError ErrorMsg
+	syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
+	" Highlight trailing whitespace, unless we're in insert mode and the
+	" cursor's placed right after the whitespace. This prevents us from having
+	" to put up with whitespace being highlighted in the middle of typing
+	" something
+	autocmd defgroup InsertEnter * match NimError /\s\+\%#\@<!$/
+	autocmd defgroup InsertLeave * match NimError /\s\+$/
 endfunction
 
 " color scheme
@@ -109,14 +111,14 @@ set background=dark
 colorscheme solarized
 
 " vim-slime
-"let g:slime_target = "tmux"
-let g:slime_target = "screen"
+"let g:slime_target = 'tmux'
+let g:slime_target = 'screen'
 
 " gitgutter
-au VimEnter * highlight clear SignColumn
+autocmd defgroup VimEnter * highlight clear SignColumn
 
 " haskellmode-vim
-let g:haddock_browser="/usr/bin/firefox"
+let g:haddock_browser='/usr/bin/firefox'
 
 " Go
 autocmd defgroup BufWritePre *.go Fmt
@@ -145,16 +147,16 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " Smarty
-au defgroup BufRead,BufNewFile *.tpl set filetype=smarty
+autocmd defgroup BufRead,BufNewFile *.tpl set filetype=smarty
 
 " Gnuplot
-au defgroup BufRead,BufNewFile *.gnuplot set filetype=gnuplot
+autocmd defgroup BufRead,BufNewFile *.gnuplot set filetype=gnuplot
 
 " Vala
-au defgroup BufRead,BufNewFile *.vala,*.vapi,*.vala.in set filetype=vala efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m shiftwidth=4 softtabstop=4 expandtab smarttab
+autocmd defgroup BufRead,BufNewFile *.vala,*.vapi,*.vala.in set filetype=vala efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m shiftwidth=4 softtabstop=4 expandtab smarttab
 
 " Genie
-au defgroup BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 softtabstop=4 expandtab smarttab
+autocmd defgroup BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 softtabstop=4 expandtab smarttab
 
 "" YouCompleteMe
 "let g:ycm_enable_diagnostic_signs = 0
@@ -173,7 +175,7 @@ autocmd defgroup FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd defgroup FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " VUE
-au defgroup BufRead,BufNewFile *.vue set filetype=xml
+autocmd defgroup BufRead,BufNewFile *.vue set filetype=xml
 
 " airline
 let g:airline_theme = 'solarized'
