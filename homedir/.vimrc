@@ -20,6 +20,7 @@ set number
 "set undofile		" persistent undo
 set autoread		" auto reload modified files
 set t_ut=		" disable the Background Color Erase that messes with some color schemes
+set completeopt-=preview
 
 " session options
 set sessionoptions-=options
