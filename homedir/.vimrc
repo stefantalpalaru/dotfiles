@@ -34,6 +34,7 @@ map <C-Left> gT
 map <C-Right> gt
 
 " self-cleaning augroup, to avoid problem when sourcing ~/.vimrc multiple times
+" https://www.reddit.com/r/vim/comments/4p4ogb/augroup_autocmd_need_some_clarification/d4i14it/
 augroup defgroup
 	autocmd!
 augroup END
@@ -106,6 +107,9 @@ function s:NimConfigure()
 	autocmd defgroup InsertLeave * match NimError /\s\+$/
 endfunction
 
+" Linux coding style
+let g:linuxsty_patterns = ['/usr/src/', '/src/77_DLD/CODE/00_github/w_scan2']
+
 " color scheme
 "colorscheme evening
 set background=dark
@@ -140,6 +144,7 @@ let g:ale_linters = {
 \   'c': ['clang'],
 \}
 let g:ale_python_flake8_args = '--ignore=E,W,F403,F405 --select=F,C'
+let g:ale_python_mypy_options = '--py2'
 let g:ale_c_clang_options = '-std=c11 -Wall -Wextra -fexceptions -DNDEBUG'
 set statusline+=%{ALEGetStatusLine()}
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
@@ -182,4 +187,9 @@ autocmd defgroup BufRead,BufNewFile *.vue set filetype=xml
 let g:airline_theme = 'solarized'
 let g:airline_solarized_bg = 'dark'
 let g:airline_powerline_fonts = 1
+
+" HTML indentation - https://www.reddit.com/r/vim/comments/7h2zx4/help_with_html_indentation/dqnp1jp/
+let g:html_indent_script1 = 'inc'
+let g:html_indent_style1 = 'inc'
+let g:html_indent_inctags = 'html,body,head,tbody,p,li,dd,dt,h1,h2,h3,h4,h5,h6,blockquote,section'
 
