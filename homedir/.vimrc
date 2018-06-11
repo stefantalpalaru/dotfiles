@@ -98,7 +98,7 @@ function s:NimConfigure()
 	setlocal textwidth=80
 	" inspired by https://github.com/vivien/vim-linux-coding-style
 	highlight default link NimError ErrorMsg
-	syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
+	"syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
 	" Highlight trailing whitespace, unless we're in insert mode and the
 	" cursor's placed right after the whitespace. This prevents us from having
 	" to put up with whitespace being highlighted in the middle of typing
@@ -170,6 +170,7 @@ autocmd defgroup BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 softtab
 "let g:ycm_confirm_extra_conf = 0
 "let g:ycm_autoclose_preview_window_after_completion = 1
 "let b:ycm_largefile = 1
+"let g:ycm_add_preview_to_completeopt = 0
 
 " neocomplete
 let g:neocomplete#enable_at_startup = 1
@@ -187,9 +188,25 @@ autocmd defgroup BufRead,BufNewFile *.vue set filetype=xml
 let g:airline_theme = 'solarized'
 let g:airline_solarized_bg = 'dark'
 let g:airline_powerline_fonts = 1
+" add the buffer number next to the file name
+let g:airline_section_c = airline#section#create_left(['%f','b#%n'])
 
 " HTML indentation - https://www.reddit.com/r/vim/comments/7h2zx4/help_with_html_indentation/dqnp1jp/
 let g:html_indent_script1 = 'inc'
 let g:html_indent_style1 = 'inc'
 let g:html_indent_inctags = 'html,body,head,tbody,p,li,dd,dt,h1,h2,h3,h4,h5,h6,blockquote,section'
+
+" some Python code using tabs
+autocmd defgroup FileType python call s:PythonTabConfigure()
+function s:PythonTabConfigure()
+	let l:dirs = [ '/CODE/00_github/portage/' ]
+	let l:path = expand('%:p')
+	for l:d in l:dirs
+		if l:path =~ l:d
+			setlocal noexpandtab
+			setlocal tabstop=4
+			break
+		endif
+	endfor
+endfunction
 
