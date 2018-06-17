@@ -10,7 +10,7 @@ call pathogen#infect()
 set nobackup		" do not keep a backup file, use versions instead
 set history=50		" keep 50 lines of command line history
 set autoindent		" always set autoindenting on
-set statusline=%m%F%r%h%w\ %y\ [line:%04l\ col:%04v]\ [%p%%]\ [lines:%L]
+set statusline=%m%F%r%h%w\ %y\ [line:%04l\ col:%04v]\ [%p%%]\ [lines:%L] " overridden by airline
 set laststatus=2
 set ignorecase
 set smartcase
@@ -33,7 +33,7 @@ map <C-Down> :q<CR>
 map <C-Left> gT
 map <C-Right> gt
 
-" self-cleaning augroup, to avoid problem when sourcing ~/.vimrc multiple times
+" self-cleaning augroup, to avoid problems when sourcing ~/.vimrc multiple times
 " https://www.reddit.com/r/vim/comments/4p4ogb/augroup_autocmd_need_some_clarification/d4i14it/
 augroup defgroup
 	autocmd!
@@ -189,7 +189,11 @@ let g:airline_theme = 'solarized'
 let g:airline_solarized_bg = 'dark'
 let g:airline_powerline_fonts = 1
 " add the buffer number next to the file name
-let g:airline_section_c = airline#section#create_left(['%f','b#%n'])
+if exists('+autochdir') && &autochdir == 1
+	let g:airline_section_c = airline#section#create(['%<', 'path', ' ', 'readonly', '%<', 'b%n'])
+else
+	let g:airline_section_c = airline#section#create(['%<', 'file', ' ', 'readonly', '%<', 'b%n'])
+endif
 
 " HTML indentation - https://www.reddit.com/r/vim/comments/7h2zx4/help_with_html_indentation/dqnp1jp/
 let g:html_indent_script1 = 'inc'
