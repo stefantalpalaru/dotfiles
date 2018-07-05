@@ -143,7 +143,7 @@ let g:ale_linters = {
 \   'python': ['flake8'],
 \   'c': ['clang'],
 \}
-let g:ale_python_flake8_args = '--ignore=E,W,F403,F405 --select=F,C'
+let g:ale_python_flake8_options = '--ignore=E,W,F403,F405 --select=F,C'
 let g:ale_python_mypy_options = '--py2'
 let g:ale_c_clang_options = '-std=c11 -Wall -Wextra -fexceptions -DNDEBUG'
 set statusline+=%{ALEGetStatusLine()}
