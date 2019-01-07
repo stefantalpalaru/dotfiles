@@ -7,9 +7,10 @@ source $VIMRUNTIME/defaults.vim
 call pathogen#infect()
 
 " global options
-set nobackup		" do not keep a backup file, use versions instead
-set history=50		" keep 50 lines of command line history
-set autoindent		" always set autoindenting on
+set nobackup				" do not keep backup files
+set directory=~/.vim/swapfiles//	" keep the swapfiles in the same dir, but with their specific paths preserved
+set history=50				" keep 50 lines of command line history
+set autoindent				" always set autoindenting on
 set statusline=%m%F%r%h%w\ %y\ [line:%04l\ col:%04v]\ [%p%%]\ [lines:%L] " overridden by airline
 set laststatus=2
 set ignorecase
@@ -89,6 +90,11 @@ autocmd defgroup FileType javascript setlocal shiftwidth=4
 autocmd defgroup FileType javascript setlocal softtabstop=4
 autocmd defgroup FileType javascript setlocal expandtab
 
+" Ruby
+autocmd defgroup FileType ruby setlocal shiftwidth=2
+autocmd defgroup FileType ruby setlocal softtabstop=2
+autocmd defgroup FileType ruby setlocal expandtab
+
 " Nim
 autocmd defgroup FileType nim call s:NimConfigure()
 function s:NimConfigure()
@@ -106,6 +112,7 @@ function s:NimConfigure()
 	autocmd defgroup InsertEnter * match NimError /\s\+\%#\@<!$/
 	autocmd defgroup InsertLeave * match NimError /\s\+$/
 endfunction
+autocmd defgroup BufRead,BufNewFile *.nimble set filetype=nim
 
 " Linux coding style
 let g:linuxsty_patterns = ['/usr/src/', '/src/77_DLD/CODE/00_github/w_scan2']
