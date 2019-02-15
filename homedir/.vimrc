@@ -71,37 +71,30 @@ map <F4> :TlistToggle<CR>
 let g:Tlist_WinWidth = 50
 
 " htmldjango
-autocmd defgroup FileType htmldjango setlocal shiftwidth=4
-autocmd defgroup FileType htmldjango setlocal softtabstop=4
-autocmd defgroup FileType htmldjango setlocal expandtab
+autocmd defgroup FileType htmldjango setlocal shiftwidth=4 softtabstop=4 expandtab
+
+" html
+autocmd defgroup FileType html setlocal shiftwidth=4 softtabstop=4 expandtab
 
 " Jinja
-autocmd defgroup FileType jinja setlocal shiftwidth=4
-autocmd defgroup FileType jinja setlocal softtabstop=4
-autocmd defgroup FileType jinja setlocal expandtab
+autocmd defgroup FileType jinja setlocal shiftwidth=4 softtabstop=4 expandtab
 
 " Perl
-autocmd defgroup FileType perl setlocal shiftwidth=4
-autocmd defgroup FileType perl setlocal softtabstop=4
-autocmd defgroup FileType perl setlocal expandtab
+autocmd defgroup FileType perl setlocal shiftwidth=4 softtabstop=4 expandtab
 
 " js
-autocmd defgroup FileType javascript setlocal shiftwidth=4
-autocmd defgroup FileType javascript setlocal softtabstop=4
-autocmd defgroup FileType javascript setlocal expandtab
+autocmd defgroup FileType javascript setlocal shiftwidth=4 softtabstop=4 expandtab
 
 " Ruby
-autocmd defgroup FileType ruby setlocal shiftwidth=2
-autocmd defgroup FileType ruby setlocal softtabstop=2
-autocmd defgroup FileType ruby setlocal expandtab
+autocmd defgroup FileType ruby setlocal shiftwidth=2 softtabstop=2 expandtab
+
+" YAML
+autocmd defgroup FileType yaml setlocal shiftwidth=2 softtabstop=2 expandtab
 
 " Nim
 autocmd defgroup FileType nim call s:NimConfigure()
 function s:NimConfigure()
-	setlocal shiftwidth=2
-	setlocal softtabstop=2
-	setlocal expandtab
-	setlocal textwidth=80
+	setlocal shiftwidth=2 softtabstop=2 expandtab textwidth=80
 	" inspired by https://github.com/vivien/vim-linux-coding-style
 	highlight default link NimError ErrorMsg
 	"syn match NimError /\%>80v[^()\{\}\[\]<>]\+/ " virtual column 81 and more
@@ -118,7 +111,6 @@ autocmd defgroup BufRead,BufNewFile *.nimble set filetype=nim
 let g:linuxsty_patterns = ['/usr/src/', '/src/77_DLD/CODE/00_github/w_scan2']
 
 " color scheme
-"colorscheme evening
 set background=dark
 colorscheme solarized
 
