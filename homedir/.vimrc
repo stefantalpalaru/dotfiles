@@ -22,6 +22,10 @@ set number
 set autoread		" auto reload modified files
 set t_ut=		" disable the Background Color Erase that messes with some color schemes
 set completeopt-=preview
+set ttyfast
+set foldmethod=manual
+let loaded_matchparen=1 " disable the builtin matchparen.vim plugin which is killing Vim's responsiveness
+
 
 " session options
 set sessionoptions-=options
@@ -47,6 +51,9 @@ autocmd defgroup BufNewFile,BufRead *.engine set filetype=php
 " Flex
 autocmd defgroup BufNewFile,BufRead *.mxml set filetype=mxml
 autocmd defgroup BufNewFile,BufRead *.as set filetype=actionscript
+
+" Jenkins
+autocmd defgroup BufNewFile,BufRead Jenkinsfile set filetype=groovy
 
 " Nekthuth
 let g:nekthuth_sbcl = '/usr/bin/sbcl'
@@ -192,6 +199,18 @@ if exists('+autochdir') && &autochdir == 1
 	let g:airline_section_c = airline#section#create(['%<', 'path', ' ', 'readonly', '%<', 'b%n'])
 else
 	let g:airline_section_c = airline#section#create(['%<', 'file', ' ', 'readonly', '%<', 'b%n'])
+endif
+" remove unused modes
+let g:airline_enable_fugitive=0
+let g:airline_enable_syntastic=0
+" make Esc happen without waiting for timeoutlen
+if ! has('gui_running')
+  set ttimeoutlen=10
+  augroup FastEscape
+    autocmd!
+    au InsertEnter * set timeoutlen=0
+    au InsertLeave * set timeoutlen=1000
+  augroup END
 endif
 
 " HTML indentation - https://www.reddit.com/r/vim/comments/7h2zx4/help_with_html_indentation/dqnp1jp/
