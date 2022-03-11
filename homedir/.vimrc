@@ -25,6 +25,8 @@ set completeopt-=preview
 set ttyfast
 set foldmethod=manual
 let loaded_matchparen=1 " disable the builtin matchparen.vim plugin which is killing Vim's responsiveness
+set scrolloff=1 " number of minimum lines between the cursor and an orizontal margin
+set redrawtime=0 " https://old.reddit.com/r/vim/comments/pgp5x5/experiencing_great_lag_with_syntax_highlighting/
 
 
 " session options
@@ -33,7 +35,6 @@ set sessionoptions-=folds
 
 " simplify common tab operations
 map <C-Up> :tabnew<CR>
-"map <C-Down> :tabclose<CR>
 map <C-Down> :q<CR>
 map <C-Left> gT
 map <C-Right> gt
@@ -115,7 +116,7 @@ endfunction
 autocmd defgroup BufRead,BufNewFile *.nimble set filetype=nim
 
 " Linux coding style
-let g:linuxsty_patterns = ['/usr/src/', '/src/77_DLD/CODE/00_github/w_scan2']
+let g:linuxsty_patterns = ['/usr/src/', '/src/77_DLD/CODE/00_github/w_scan2', '/mnt/sda3/storage/CODE/00_github/w_scan2']
 
 " color scheme
 set background=dark
@@ -179,7 +180,7 @@ autocmd defgroup BufRead,BufNewFile *.gs set filetype=genie shiftwidth=4 softtab
 "let g:ycm_add_preview_to_completeopt = 0
 
 " neocomplete
-let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_at_startup = 1
 " enable omni completion.
 autocmd defgroup FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd defgroup FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
